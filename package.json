@@ -1,0 +1,24 @@
+{
+  "name": "tolak-motor-edit",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio",
+    "preview": "remotion render TolakMotor out/preview.mp4 --scale=0.6666666666666666 --crf=24",
+    "render": "remotion render TolakMotor out/final.mp4 --crf=18"
+  },
+  "dependencies": {
+    "@fontsource/anton": "^5.3.0",
+    "@fontsource/montserrat": "^5.3.0",
+    "@remotion/cli": "4.0.540",
+    "@remotion/fonts": "^4.0.540",
+    "@remotion/media": "4.0.540",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.540"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.8",
+    "typescript": "5.8.3"
+  }
+}
