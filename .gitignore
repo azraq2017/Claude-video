@@ -1,5 +1,5 @@
 node_modules
 out
 .DS_Store
-public/source.mp4
-public/voice.m4a
+public/v*/source.mp4
+public/v*/voice.m4a

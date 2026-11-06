@@ -1,5 +1,5 @@
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { CAPTION_PAGES } from "../data/captions";
+import type { CapPage } from "../captions";
 import { C, MONT } from "../fonts";
 import { SAFE, SAFE_CX, SAFE_W } from "../safe";
 
@@ -7,12 +7,12 @@ import { SAFE, SAFE_CX, SAFE_W } from "../safe";
 // bottom UI and well below the face (face never goes lower than ~y=1060).
 const CAPTION_Y = 1300;
 
-export const Captions: React.FC<{ hiddenRanges: [number, number][] }> = ({ hiddenRanges }) => {
+export const Captions: React.FC<{ pages: CapPage[]; hiddenRanges: [number, number][] }> = ({ pages, hiddenRanges }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   if (hiddenRanges.some(([a, b]) => frame >= a && frame < b)) return null;
 
-  const page = CAPTION_PAGES.find((p) => frame >= p.from && frame < p.to);
+  const page = pages.find((p) => frame >= p.from && frame < p.to);
   if (!page) return null;
 
   const enter = spring({ frame: frame - page.from, fps, config: { damping: 14, stiffness: 220 } });

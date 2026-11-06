@@ -1,0 +1,63 @@
+import type React from "react";
+import { createTimeline, Clip, Timeline } from "./timeline";
+import { createFaceTrack, FaceTrack } from "./face";
+import { buildCaptions, CapPage, Word } from "./captions";
+
+export type Occ = "first" | "last";
+
+export type SfxName =
+  | "whoosh" | "swoosh_down" | "pop" | "click" | "ding" | "cash" | "impact"
+  | "riser" | "error" | "drop" | "sparkle" | "shutter" | "notif" | "glass" | "send" | "stamp";
+
+export type Sfx = { frame: number; name: SfxName; vol?: number };
+
+export type Gfx = {
+  from: number; // output frame
+  dur: number; // frames
+  height: number; // approx px height, for face-aware placement
+  render: (dur: number) => React.ReactNode;
+};
+
+export type Project = {
+  id: string;
+  media: { video: string; voice: string; music: string }; // paths inside /public
+  tl: Timeline;
+  face: FaceTrack;
+  captions: CapPage[];
+  speech: [number, number][];
+  graphics: Gfx[];
+  sfx: Sfx[];
+  flashCuts: number[];
+  musicLevels?: { underVoice: number; open: number };
+};
+
+/** Shared plumbing every project needs: timeline, face track, captions and time helpers. */
+export const createBase = (opts: { clips: Clip[]; faces: number[][]; words: Word[]; keywords: string[] }) => {
+  const tl = createTimeline(opts.clips);
+  const face = createFaceTrack(opts.faces);
+  const { pages, speech } = buildCaptions(tl, opts.words, opts.keywords);
+
+  /** source seconds -> output frame (throws if that moment was cut) */
+  const F = (t: number, occ: Occ = "last"): number => {
+    const f = tl.srcToFrame(t, occ);
+    if (f === null) throw new Error(`Source time ${t}s is not in the edit`);
+    return f;
+  };
+
+  /** A graphic shown from source time a to b; `r(t)` gives frames relative to its start. */
+  const gfx = (
+    fromSrc: number,
+    toSrc: number,
+    height: number,
+    render: (dur: number, r: (t: number, occ?: Occ) => number) => React.ReactNode,
+    occ: Occ = "last",
+  ): Gfx => {
+    const from = F(fromSrc, occ);
+    const dur = F(toSrc, occ) - from;
+    return { from, dur, height, render: (d) => render(d, (t, o) => F(t, o ?? occ) - from) };
+  };
+
+  const s = (t: number, name: SfxName, vol = 0.6, occ: Occ = "last"): Sfx => ({ frame: F(t, occ), name, vol });
+
+  return { tl, face, captions: pages, speech, F, gfx, s };
+};

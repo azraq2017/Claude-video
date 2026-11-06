@@ -108,23 +108,30 @@ export const Cross: React.FC<{ s?: number }> = ({ s = 48 }) => (
 /* 1. HOOK title                                                        */
 /* ------------------------------------------------------------------ */
 
-export const HookTitle: React.FC<{ dur: number }> = ({ dur }) => {
+export const HookTitle: React.FC<{
+  dur: number;
+  kicker?: string;
+  lines?: string[];
+  footer?: string;
+  color?: string;
+  footerAt?: number;
+}> = ({ dur, kicker = "Tolak motor?", lines = ["Harga", "Maksimum"], footer = "Ini caranya 👇", color = C.yellow, footerAt = 34 }) => {
   const { frame, fps, v, out } = useEnvelope(dur, 6);
   const l1 = pop(frame, fps, 0);
   const l2 = pop(frame, fps, 10);
-  const l3 = pop(frame, fps, 34);
+  const l3 = pop(frame, fps, footerAt);
   const shake = frame < 40 ? Math.sin(frame * 1.7) * 3 * (1 - frame / 40) : 0;
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, opacity: out }}>
       <Chip bg={C.ink} color={C.white} size={44} style={{ transform: `scale(${l1}) rotate(-3deg)` }}>
-        Tolak motor?
+        {kicker}
       </Chip>
       <div
         style={{
           fontFamily: ANTON,
           fontSize: 150,
           lineHeight: 0.95,
-          color: C.yellow,
+          color,
           textTransform: "uppercase",
           WebkitTextStroke: "10px #000",
           paintOrder: "stroke fill",
@@ -134,12 +141,15 @@ export const HookTitle: React.FC<{ dur: number }> = ({ dur }) => {
           textAlign: "center",
         }}
       >
-        Harga
-        <br />
-        Maksimum
+        {lines.map((l, i) => (
+          <React.Fragment key={i}>
+            {i > 0 && <br />}
+            {l}
+          </React.Fragment>
+        ))}
       </div>
       <Chip bg={C.red} color={C.white} size={46} style={{ transform: `scale(${l3}) rotate(2deg)`, opacity: v }}>
-        Ini caranya 👇
+        {footer}
       </Chip>
     </div>
   );
@@ -203,7 +213,8 @@ export const RevealRows: React.FC<{ dur: number; rows: Row[]; title?: string }> 
         flexDirection: "column",
         gap: 14,
         alignItems: "stretch",
-        width: 760,
+        minWidth: 640,
+        maxWidth: 860,
       }}
     >
       {title && (
@@ -233,7 +244,7 @@ export const RevealRows: React.FC<{ dur: number; rows: Row[]; title?: string }> 
             }}
           >
             <Icon s={60} />
-            <div style={{ fontFamily: MONT, fontWeight: 800, fontSize: 40, color: "#555", textTransform: "uppercase" }}>
+            <div style={{ fontFamily: MONT, fontWeight: 800, fontSize: 36, color: "#555", textTransform: "uppercase", whiteSpace: "nowrap" }}>
               {r.label}
             </div>
             <div
@@ -244,6 +255,8 @@ export const RevealRows: React.FC<{ dur: number; rows: Row[]; title?: string }> 
                 color: r.accent ?? C.ink,
                 textTransform: "uppercase",
                 marginLeft: "auto",
+                paddingLeft: 24,
+                whiteSpace: "nowrap",
               }}
             >
               {r.value}
@@ -543,7 +556,13 @@ export const TipCard: React.FC<{ dur: number; washAt: number; shineAt: number }>
 /* 10. CTA: DM + location in bio                                       */
 /* ------------------------------------------------------------------ */
 
-export const CtaDM: React.FC<{ dur: number; tradeAt: number; bioAt: number }> = ({ dur, tradeAt, bioAt }) => {
+export const CtaDM: React.FC<{
+  dur: number;
+  tradeAt: number;
+  bioAt: number;
+  items?: string[];
+  footer?: string;
+}> = ({ dur, tradeAt, bioAt, items = ["Jual", "Trade-in", "Beli"], footer = "📍 Lokasi & no. phone kat BIO ☝️" }) => {
   const { frame, fps, inn, out } = useEnvelope(dur, 1);
   const t = (n: number) => pop(frame, fps, tradeAt + n * 6);
   const b = pop(frame, fps, bioAt);
@@ -596,15 +615,188 @@ export const CtaDM: React.FC<{ dur: number; tradeAt: number; bioAt: number }> = 
         </div>
       </div>
       <div style={{ display: "flex", gap: 12 }}>
-        {["Jual", "Trade-in", "Beli"].map((s, i) => (
+        {items.map((s, i) => (
           <Chip key={s} bg={i === 1 ? C.yellow : C.white} size={44} style={{ transform: `scale(${t(i)})`, opacity: Math.min(1, t(i) * 2) }}>
             <Check s={40} /> {s}
           </Chip>
         ))}
       </div>
       <Chip bg={C.ink} color={C.white} size={46} style={{ transform: `scale(${b}) translateY(${bob}px)`, opacity: Math.min(1, b * 2) }}>
-        📍 Lokasi & no. phone kat BIO ☝️
+        {footer}
       </Chip>
+    </div>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* 11. Burst – words slam in one by one ("PECAH! PECAH! PECAH!")        */
+/* ------------------------------------------------------------------ */
+
+export const Burst: React.FC<{ dur: number; label?: string; word: string; at: number[]; color?: string; crack?: boolean }> = ({
+  dur,
+  label,
+  word,
+  at,
+  color = C.red,
+  crack = false,
+}) => {
+  const { frame, fps, inn, out } = useEnvelope(dur);
+  const last = at[at.length - 1];
+  const shake = at.some((a) => frame >= a && frame < a + 6) ? Math.sin(frame * 4) * 7 : 0;
+  return (
+    <div style={{ opacity: out, display: "flex", flexDirection: "column", alignItems: "center", gap: 6, transform: `translateX(${shake}px)` }}>
+      {label && (
+        <Chip bg={C.ink} color={C.white} size={40} style={{ transform: `scale(${inn}) rotate(-2deg)` }}>
+          {label}
+        </Chip>
+      )}
+      <div style={{ position: "relative", display: "flex", gap: 10, maxWidth: 860, justifyContent: "center" }}>
+        {at.map((a, i) => {
+          const p = spring({ frame: frame - a, fps, config: { damping: 8, stiffness: 320, mass: 0.6 } });
+          return (
+            <div
+              key={i}
+              style={{
+                fontFamily: ANTON,
+                fontSize: 78 + i * 8,
+                lineHeight: 1,
+                color: i === at.length - 1 ? color : C.white,
+                WebkitTextStroke: "8px #000",
+                paintOrder: "stroke fill",
+                textShadow: "0 8px 0 #000",
+                transform: `scale(${interpolate(p, [0, 1], [2.4, 1])}) rotate(${(i - 1) * 6}deg) translateY(${(i - 1) * -10}px)`,
+                opacity: Math.min(1, p * 2),
+              }}
+            >
+              {word}
+            </div>
+          );
+        })}
+        {crack && frame >= last && (
+          <svg width="520" height="200" viewBox="0 0 520 200" style={{ position: "absolute", left: "50%", top: -20, marginLeft: -260, pointerEvents: "none" }}>
+            <path
+              d="M260 100 L200 40 L170 10 M260 100 L330 30 L360 0 M260 100 L120 120 L40 110 M260 100 L400 140 L500 130 M260 100 L240 190 M260 100 L300 180"
+              fill="none"
+              stroke="#fff"
+              strokeWidth="5"
+              strokeLinecap="round"
+              strokeDasharray="420"
+              strokeDashoffset={interpolate(frame - last, [0, 8], [420, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
+              style={{ filter: "drop-shadow(0 0 3px #000)" }}
+            />
+          </svg>
+        )}
+      </div>
+    </div>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* 12. Price tag swinging in                                            */
+/* ------------------------------------------------------------------ */
+
+export const PriceTag: React.FC<{ dur: number; kicker: string; price: string; note?: string }> = ({ dur, kicker, price, note }) => {
+  const { frame, fps, inn, out } = useEnvelope(dur);
+  const swing = spring({ frame, fps, config: { damping: 5, stiffness: 120, mass: 0.8 } });
+  const rot = interpolate(swing, [0, 1], [-35, 0]);
+  const n = pop(frame, fps, 12);
+  return (
+    <div style={{ opacity: out, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
+      <Chip bg={C.ink} color={C.white} size={40} style={{ transform: `scale(${inn})` }}>
+        {kicker}
+      </Chip>
+      <div style={{ transform: `rotate(${rot - 4}deg)`, transformOrigin: "50% -40px", display: "flex", alignItems: "center" }}>
+        <div
+          style={{
+            position: "relative",
+            background: C.yellow,
+            border: "7px solid #000",
+            borderRadius: "28px 70px 70px 28px",
+            padding: "8px 60px 8px 80px",
+            boxShadow: shadow,
+          }}
+        >
+          <div style={{ position: "absolute", left: 26, top: "50%", marginTop: -16, width: 32, height: 32, borderRadius: 16, background: "#fff", border: "6px solid #000" }} />
+          <div style={{ fontFamily: ANTON, fontSize: 150, color: C.ink, lineHeight: 1 }}>{price}</div>
+        </div>
+      </div>
+      {note && (
+        <Chip bg={C.green} color={C.white} size={40} style={{ transform: `scale(${n}) rotate(2deg)` }}>
+          {note}
+        </Chip>
+      )}
+    </div>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* 13. WhatsApp chat card                                               */
+/* ------------------------------------------------------------------ */
+
+export const WhatsAppCard: React.FC<{ dur: number; title: string; msgs: { at: number; text: string }[]; footer?: { at: number; text: string } }> = ({
+  dur,
+  title,
+  msgs,
+  footer,
+}) => {
+  const { frame, fps, inn, out } = useEnvelope(dur);
+  const f = footer ? pop(frame, fps, footer.at) : 0;
+  return (
+    <div
+      style={{
+        opacity: out,
+        width: 720,
+        transform: `translateY(${interpolate(inn, [0, 1], [60, 0])}px) scale(${interpolate(inn, [0, 1], [0.7, 1])})`,
+        background: "#ECE5DD",
+        border: "6px solid #000",
+        borderRadius: 34,
+        overflow: "hidden",
+        boxShadow: shadow,
+      }}
+    >
+      <div style={{ background: "#075E54", padding: "14px 24px", display: "flex", alignItems: "center", gap: 16 }}>
+        <svg width="56" height="56" viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="22" fill="#25D366" stroke="#fff" strokeWidth="3" />
+          <path d="M15 33 l2-6 a9 9 0 1 1 4 4 z" fill="#fff" />
+        </svg>
+        <div style={{ fontFamily: MONT, fontWeight: 900, fontSize: 44, color: "#fff", textTransform: "uppercase" }}>{title}</div>
+      </div>
+      <div style={{ padding: "16px 22px", display: "flex", flexDirection: "column", gap: 12, alignItems: "flex-end" }}>
+        {msgs.map((m, i) => {
+          const p = pop(frame, fps, m.at);
+          return (
+            <div
+              key={i}
+              style={{
+                background: "#DCF8C6",
+                borderRadius: "22px 4px 22px 22px",
+                padding: "10px 22px",
+                fontFamily: MONT,
+                fontWeight: 800,
+                fontSize: 40,
+                color: C.ink,
+                boxShadow: "0 3px 0 rgba(0,0,0,0.25)",
+                transform: `scale(${p})`,
+                transformOrigin: "100% 0%",
+                opacity: Math.min(1, p * 2),
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+              }}
+            >
+              {m.text}
+              <span style={{ fontSize: 26, color: "#34B7F1", fontWeight: 900 }}>✓✓</span>
+            </div>
+          );
+        })}
+        {footer && (
+          <div style={{ alignSelf: "center", transform: `scale(${f})`, opacity: Math.min(1, f * 2) }}>
+            <Chip bg={C.yellow} size={40}>
+              {footer.text}
+            </Chip>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

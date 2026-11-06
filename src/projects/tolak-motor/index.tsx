@@ -1,5 +1,4 @@
 import React from "react";
-import { srcToFrame, PLACED, FPS } from "./timeline";
 import {
   ChipCloud,
   CtaDM,
@@ -11,53 +10,37 @@ import {
   Stamp,
   Sticker,
   TipCard,
-} from "./components/Graphics";
-import { C } from "./fonts";
+} from "../../components/Graphics";
+import { C } from "../../fonts";
+import { FPS } from "../../timeline";
+import { createBase, Gfx, Project, Sfx } from "../../project";
+import edl from "./edl.json";
+import words from "./words.json";
+import faces from "./faces.json";
 
 /**
- * Everything below is authored in SOURCE seconds (timestamps from the raw
- * recording / transcript) and mapped onto the edited timeline, so the edit
- * list can change without re-timing every graphic and sound.
+ * Video 1 — "Tolak motor". Everything below is authored in SOURCE seconds
+ * (timestamps from the raw recording / transcript) and mapped onto the edited
+ * timeline, so the edit list can change without re-timing every graphic.
  */
+const base = createBase({
+  clips: edl,
+  faces: faces as number[][],
+  words,
+  keywords: [
+    "maksimum", "harga", "rosak", "lc", "wave", "modenas", "sym", "city", "cap", "cai", "terima",
+    "cun", "elok", "cantik", "repair", "kautim", "drop", "tips", "basuh", "gilap", "dm", "bio",
+    "masalah", "problem", "buruk", "trade", "lokasi", "pembaikan", "dua",
+  ],
+});
+const { F, gfx, s, tl } = base;
 
-type Occ = "first" | "last";
-const F = (t: number, occ: Occ = "last"): number => {
-  const f = srcToFrame(t, occ);
-  if (f === null) throw new Error(`Source time ${t}s is not in the edit`);
-  return f;
-};
-
-export type SfxName =
-  | "whoosh" | "swoosh_down" | "pop" | "click" | "ding" | "cash" | "impact"
-  | "riser" | "error" | "drop" | "sparkle" | "shutter" | "notif";
-
-export type Sfx = { frame: number; name: SfxName; vol?: number };
-
-export type Gfx = {
-  from: number; // output frame
-  dur: number; // frames
-  height: number; // approx px height, for face-aware placement
-  render: (dur: number, rel: (t: number, occ?: Occ) => number) => React.ReactNode;
-};
-
-const gfx = (
-  fromSrc: number,
-  toSrc: number,
-  height: number,
-  render: Gfx["render"],
-  occ: Occ = "last",
-): Gfx => {
-  const from = F(fromSrc, occ);
-  const dur = F(toSrc, occ) - from;
-  return { from, dur, height, render: (d) => render(d, (t, o) => F(t, o ?? occ) - from) };
-};
-
-const HOOK = PLACED[0];
-export const HOOK_END = HOOK.from + HOOK.frames;
+const HOOK = tl.placed[0];
+const HOOK_END = HOOK.from + HOOK.frames;
 
 /* ------------------------------ GRAPHICS ------------------------------ */
 
-export const GRAPHICS: Gfx[] = [
+const GRAPHICS: Gfx[] = [
   // Cold-open hook
   { from: 0, dur: HOOK_END, height: 460, render: (d) => <HookTitle dur={d} /> },
 
@@ -118,9 +101,8 @@ export const GRAPHICS: Gfx[] = [
 
 /* -------------------------------- SFX -------------------------------- */
 
-const s = (t: number, name: SfxName, vol = 0.6, occ: Occ = "last"): Sfx => ({ frame: F(t, occ), name, vol });
 
-export const SFX: Sfx[] = [
+const SFX: Sfx[] = [
   // hook
   { frame: 0, name: "impact", vol: 0.75 },
   { frame: 10, name: "whoosh", vol: 0.5 },
@@ -191,4 +173,16 @@ export const SFX: Sfx[] = [
 ];
 
 /** Cuts that get a quick white flash + whoosh (output frames). */
-export const FLASH_CUTS: number[] = [HOOK_END, F(104.05)];
+const FLASH_CUTS: number[] = [HOOK_END, F(104.05)];
+
+export const tolakMotor: Project = {
+  id: "TolakMotor",
+  media: { video: "v1/source.mp4", voice: "v1/voice.m4a", music: "music/funky_chunk.mp3" },
+  tl,
+  face: base.face,
+  captions: base.captions,
+  speech: base.speech,
+  graphics: GRAPHICS,
+  sfx: SFX,
+  flashCuts: FLASH_CUTS,
+};

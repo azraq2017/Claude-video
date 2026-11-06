@@ -74,4 +74,22 @@ d=0.9; tt=t(d)
 def tn(f,s,dd=0.35):
     x=np.zeros(len(tt)); k=int(s*SR); tb=t(dd); x[k:k+len(tb)]=(np.sin(2*np.pi*f*tb)+0.3*np.sin(2*np.pi*2*f*tb))*np.exp(-tb*9); return x
 save("notif",reverb(tn(1318,0)+tn(1760,0.11)+tn(2637,0.22,0.5),0.8,0.25))
+
+# glass crack / shatter (for "pecah")
+d=1.2; tt=t(d); g=np.zeros(len(tt))
+crack=sosfilt(butter(2,[2000,12000],'band',fs=SR,output='sos'),rng.standard_normal(len(tt)))*np.exp(-tt*40)
+g+=crack
+for k in range(40):
+    st=int(SR*(0.005+rng.random()**2*0.6)); L=int(SR*0.12); fr=3000+rng.random()*9000
+    seg=np.sin(2*np.pi*fr*t(0.12)+rng.random()*6)*np.exp(-t(0.12)*(40+rng.random()*60))*(0.2+rng.random()*0.5)
+    g[st:st+L]+=seg[:len(g[st:st+L])]
+tb=t(0.3); g[:len(tb)]+=0.9*np.sin(2*np.pi*(70+80*np.exp(-tb*20))*tb)*np.exp(-tb*15)
+save("glass",reverb(g,1.0,0.22))
+# message send / bubble (for WhatsApp)
+d=0.35; tt=t(d); f=500+1400*(tt/d)**0.6; snd=np.sin(2*np.pi*np.cumsum(f)/SR)*np.sin(np.pi*np.clip(tt/0.22,0,1))*(tt<0.22)
+snd+=0.6*np.sin(2*np.pi*1900*tt)*np.exp(-((tt-0.24)/0.03)**2)
+save("send",reverb(snd,0.4,0.15))
+# stamp / thud
+d=0.6; tt=t(d); th=np.sin(2*np.pi*(60+140*np.exp(-tt*30))*tt)*np.exp(-tt*9)+0.4*sosfilt(butter(2,900,'low',fs=SR,output='sos'),rng.standard_normal(len(tt)))*np.exp(-tt*40)
+save("stamp",reverb(np.tanh(th*2),0.5,0.12))
 print(sorted(os.listdir(out)))

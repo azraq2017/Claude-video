@@ -1,23 +1,27 @@
-import { faceAt } from "./face";
-import { frameToSrc, PLACED, TOTAL_FRAMES } from "./timeline";
+import type { FaceTrack } from "./face";
+import type { Timeline } from "./timeline";
 import { SAFE } from "./safe";
 
 export const CAPTION_TOP = 1285; // captions occupy ~1285-1440
 
+export type Layout = { top: Float32Array; scale: Float32Array; coversCaptions: Uint8Array };
+
+export const createLayoutEngine = (tl: Timeline, face: FaceTrack) => {
+const TOTAL_FRAMES = tl.total;
 /* Per output frame: where the face is (px, after punch-in zoom), dilated over
  * +-10 frames so graphics move out of the way *before* the face arrives. */
 const RAW_TOP = new Float32Array(TOTAL_FRAMES);
 const RAW_BOT = new Float32Array(TOTAL_FRAMES);
 for (let f = 0; f < TOTAL_FRAMES; f++) {
-  const b = faceAt(frameToSrc(f));
-  const z = (PLACED.find((c) => f >= c.from && f < c.from + c.frames)?.zoom ?? 1) * 1.03;
+  const b = face.faceAt(tl.frameToSrc(f));
+  const z = tl.clipAt(f).zoom * 1.03;
   const cy = b.y + b.h / 2;
   RAW_TOP[f] = (cy - (b.h / 2) * z - 0.045) * 1920; // hijab / forehead margin
   RAW_BOT[f] = (cy + (b.h / 2) * z + 0.03) * 1920; // chin margin
 }
 const R = 10;
-export const FACE_TOP = new Float32Array(TOTAL_FRAMES);
-export const FACE_BOT = new Float32Array(TOTAL_FRAMES);
+const FACE_TOP = new Float32Array(TOTAL_FRAMES);
+const FACE_BOT = new Float32Array(TOTAL_FRAMES);
 for (let f = 0; f < TOTAL_FRAMES; f++) {
   let t = Infinity, b = -Infinity;
   for (let k = Math.max(0, f - R); k <= Math.min(TOTAL_FRAMES - 1, f + R); k++) {
@@ -31,8 +35,6 @@ for (let f = 0; f < TOTAL_FRAMES; f++) {
 const GAP = 16;
 const median = (a: number[]) => [...a].sort((x, y) => x - y)[Math.floor(a.length / 2)];
 
-export type Layout = { top: Float32Array; scale: Float32Array; coversCaptions: Uint8Array };
-
 /**
  * Face-aware placement for one graphic over output frames [from, from+dur).
  * Picks a side once (above the head / below the chin) so it never jumps
@@ -40,7 +42,7 @@ export type Layout = { top: Float32Array; scale: Float32Array; coversCaptions: U
  * shrinks when space gets tight. Below-chin graphics may borrow the caption
  * band; captions are hidden for those frames.
  */
-export const computeLayout = (from: number, dur: number, h: number): Layout => {
+const computeLayout = (from: number, dur: number, h: number): Layout => {
   const fr = Array.from({ length: dur }, (_, i) => Math.min(TOTAL_FRAMES - 1, from + i));
   const topSpace = fr.map((f) => FACE_TOP[f] - GAP - SAFE.top);
   const midSpace = fr.map((f) => CAPTION_TOP - 12 - (FACE_BOT[f] + GAP));
@@ -78,4 +80,7 @@ export const computeLayout = (from: number, dur: number, h: number): Layout => {
   const scale = Float32Array.from(sm(rawScale));
   const coversCaptions = Uint8Array.from(fr.map((_, i) => (top[i] + h * scale[i] > CAPTION_TOP - 5 ? 1 : 0)));
   return { top, scale, coversCaptions };
+};
+
+return { computeLayout };
 };
