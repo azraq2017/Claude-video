@@ -21,5 +21,13 @@ for seg in json.load(open(os.path.join(folder, "transcript.json"))):
         if core.startswith("-") and out:  # merge "berganda" + "-gandalah"
             out[-1]["w"] += txt; out[-1]["e"] = w["e"]; continue
         out.append({"w": txt, "s": w["s"], "e": w["e"], "p": raw[-1] in ".,?!"})
+# Per-video fixes for words Whisper mishears in context (e.g. brand names):
+# fixes.json = [{"s": <word start in source seconds>, "w": "<correct text>"}]
+fx_path = os.path.join(folder, "fixes.json")
+if os.path.exists(fx_path):
+    for fx in json.load(open(fx_path)):
+        for w in out:
+            if abs(w["s"] - fx["s"]) < 0.03:
+                w["w"] = fx["w"]
 json.dump(out, open(os.path.join(folder, "words.json"), "w"), ensure_ascii=False)
 print(len(out), "words ->", os.path.join(folder, "words.json"))

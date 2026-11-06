@@ -26,7 +26,7 @@ const base = createBase({
   words,
   keywords: [
     "lcd", "bateri", "pecah", "rm100", "full", "house", "line", "hidup", "repairkan", "kakak",
-    "barang", "order", "whatsapp", "model", "stock", "spot", "siap", "sama", "dm", "kedai", "sibuk",
+    "barang", "order", "whatsapp", "model", "stock", "spot", "siap", "sama", "dm", "kedai", "sibuk", "tas", "tech",
   ],
 });
 const { F, gfx, s, tl } = base;
@@ -115,7 +115,7 @@ const GRAPHICS: Gfx[] = [
   )),
   gfx(73.74, 75.5, 270, (d) => <Stamp dur={d} top="Terus siap" main="Hari sama" />),
   gfx(75.94, 78.5, 330, (d, r) => (
-    <CtaDM dur={d} tradeAt={r(76.2)} bioAt={r(77.0)} items={["LCD", "Bateri", "Repair"]} footer="📍 Datang kedai / DM je ☝️" />
+    <CtaDM dur={d} tradeAt={r(76.2)} bioAt={r(77.55)} items={["LCD", "Bateri", "Repair"]} footer="📍 Kedai Tas Tech" />
   )),
 ];
 
@@ -167,6 +167,7 @@ const SFX: Sfx[] = [
   s(76.2, "pop", 0.45),
   s(76.4, "pop", 0.45),
   s(76.6, "pop", 0.45),
+  s(77.58, "ding", 0.5), // brand name
 ];
 
 /** Cuts that get a quick white flash. */
