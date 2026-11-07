@@ -202,7 +202,8 @@ export const Sticker: React.FC<{
 
 export type Row = { at: number; label: string; value: string; icon: "check" | "warn" | "cross"; accent?: string };
 
-export const RevealRows: React.FC<{ dur: number; rows: Row[]; title?: string }> = ({ dur, rows, title }) => {
+export const RevealRows: React.FC<{ dur: number; rows: Row[]; title?: string; compact?: boolean }> = ({ dur, rows, title, compact = false }) => {
+  const k = compact ? 0.78 : 1;
   const { frame, fps, inn, out } = useEnvelope(dur);
   return (
     <div
@@ -236,22 +237,22 @@ export const RevealRows: React.FC<{ dur: number; rows: Row[]; title?: string }> 
               gap: 18,
               background: C.white,
               border: "5px solid #000",
-              borderRadius: 26,
-              padding: "14px 24px",
+              borderRadius: 26 * k,
+              padding: compact ? "8px 20px" : "14px 24px",
               boxShadow: shadow,
               transform: `translateX(${interpolate(p, [0, 1], [i % 2 ? 300 : -300, 0])}px) scale(${interpolate(p, [0, 1], [0.6, 1])})`,
               opacity: Math.min(1, p * 1.5),
             }}
           >
-            <Icon s={60} />
-            <div style={{ fontFamily: MONT, fontWeight: 800, fontSize: 36, color: "#555", textTransform: "uppercase", whiteSpace: "nowrap" }}>
+            <Icon s={60 * k} />
+            <div style={{ fontFamily: MONT, fontWeight: 800, fontSize: 36 * k, color: "#555", textTransform: "uppercase", whiteSpace: "nowrap" }}>
               {r.label}
             </div>
             <div
               style={{
                 fontFamily: MONT,
                 fontWeight: 900,
-                fontSize: 52,
+                fontSize: 52 * k,
                 color: r.accent ?? C.ink,
                 textTransform: "uppercase",
                 marginLeft: "auto",
@@ -797,6 +798,93 @@ export const WhatsAppCard: React.FC<{ dur: number; title: string; msgs: { at: nu
           </div>
         )}
       </div>
+    </div>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* 14. Price ladder – each new price strikes the previous one          */
+/* ------------------------------------------------------------------ */
+
+export const PriceLadder: React.FC<{
+  dur: number;
+  title: string;
+  steps: { at: number; price: string; tag?: string }[];
+  note?: { at: number; text: string };
+}> = ({ dur, title, steps, note }) => {
+  const { frame, fps, inn, out } = useEnvelope(dur);
+  const n = note ? pop(frame, fps, note.at) : 0;
+  return (
+    <div style={{ opacity: out, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
+      <Chip bg={C.ink} color={C.white} size={40} style={{ transform: `scale(${inn})` }}>
+        {title}
+      </Chip>
+      <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+        {steps.map((st, i) => {
+          const p = pop(frame, fps, st.at);
+          const next = steps[i + 1];
+          const struck = next ? interpolate(frame, [next.at, next.at + 6], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 0;
+          const isLast = i === steps.length - 1;
+          if (frame < st.at - 1) return null;
+          // keep only "previous (struck) -> current" on screen so the row fits the safe width
+          const current = steps.reduce((ci, x, j) => (frame >= x.at - 1 ? j : ci), 0);
+          if (i < current - 1) return null;
+          return (
+            <div
+              key={i}
+              style={{
+                position: "relative",
+                transform: `scale(${p * (1 - 0.25 * struck)})`,
+                opacity: Math.min(1, p * 2) * (1 - 0.45 * struck),
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: ANTON,
+                  fontSize: isLast ? 112 : 72,
+                  lineHeight: 1,
+                  color: isLast ? C.yellow : C.white,
+                  WebkitTextStroke: "8px #000",
+                  paintOrder: "stroke fill",
+                  textShadow: "0 7px 0 #000",
+                }}
+              >
+                {st.price}
+              </div>
+              {st.tag && (
+                <div style={{ marginTop: 4 }}>
+                  <Chip bg={isLast ? C.green : C.white} color={isLast ? C.white : C.ink} size={30}>
+                    {st.tag}
+                  </Chip>
+                </div>
+              )}
+              <div
+                style={{
+                  position: "absolute",
+                  left: -8,
+                  top: "38%",
+                  height: 10,
+                  width: `${struck * 106}%`,
+                  background: C.red,
+                  border: "3px solid #000",
+                  borderRadius: 6,
+                  transform: "rotate(-8deg)",
+                }}
+              />
+            </div>
+          );
+        })}
+      </div>
+      {note && (
+        <div style={{ transform: `scale(${n})`, opacity: Math.min(1, n * 2) }}>
+          <Chip bg={C.white} size={36}>
+            {note.text}
+          </Chip>
+        </div>
+      )}
     </div>
   );
 };

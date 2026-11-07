@@ -4,8 +4,9 @@ import { FPS } from "./timeline";
 import type { Project } from "./project";
 import { tolakMotor } from "./projects/tolak-motor";
 import { repairPhone } from "./projects/repair-phone";
+import { showroom } from "./projects/showroom";
 
-const PROJECTS: Project[] = [tolakMotor, repairPhone];
+const PROJECTS: Project[] = [tolakMotor, repairPhone, showroom];
 
 // Projects hold functions/typed arrays, so pass them by closure instead of
 // (JSON-serialised) defaultProps.

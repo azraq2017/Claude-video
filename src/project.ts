@@ -15,6 +15,7 @@ export type Gfx = {
   from: number; // output frame
   dur: number; // frames
   height: number; // approx px height, for face-aware placement
+  place?: "auto" | "below"; // "below": always under the chin, may take over the caption band
   render: (dur: number) => React.ReactNode;
 };
 

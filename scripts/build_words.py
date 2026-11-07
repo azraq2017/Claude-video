@@ -14,6 +14,8 @@ out = []
 for seg in json.load(open(os.path.join(folder, "transcript.json"))):
     for w in seg["words"]:
         raw = w["w"].strip()
+        if raw[:1] == "," and out and re.fullmatch(r",\d{3}[.,?!]?", raw):  # "RM7" + ",000." -> "RM7,000"
+            out[-1]["w"] += raw.rstrip(".,?!"); out[-1]["e"] = w["e"]; out[-1]["p"] = raw[-1] in ".?!"; continue
         core = re.sub(r"[^\w\-]", "", raw)
         if not core:
             continue
@@ -29,5 +31,6 @@ if os.path.exists(fx_path):
         for w in out:
             if abs(w["s"] - fx["s"]) < 0.03:
                 w["w"] = fx["w"]
+    out = [w for w in out if w["w"]]  # an empty fix drops the word
 json.dump(out, open(os.path.join(folder, "words.json"), "w"), ensure_ascii=False)
 print(len(out), "words ->", os.path.join(folder, "words.json"))

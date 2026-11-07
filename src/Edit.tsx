@@ -103,7 +103,7 @@ const FollowFace: React.FC<{ layout: Layout; children: React.ReactNode }> = ({ l
 export const Edit: React.FC<{ project: Project }> = ({ project: p }) => {
   const { layouts, captionHidden, musicVolume } = useMemo(() => {
     const engine = createLayoutEngine(p.tl, p.face);
-    const layouts = p.graphics.map((g) => engine.computeLayout(g.from, g.dur, g.height));
+    const layouts = p.graphics.map((g) => engine.computeLayout(g.from, g.dur, g.height, g.place));
     // Hide captions only while a big graphic has had to borrow the caption band.
     const captionHidden: [number, number][] = [];
     p.graphics.forEach((g, i) => {

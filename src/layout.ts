@@ -42,7 +42,7 @@ const median = (a: number[]) => [...a].sort((x, y) => x - y)[Math.floor(a.length
  * shrinks when space gets tight. Below-chin graphics may borrow the caption
  * band; captions are hidden for those frames.
  */
-const computeLayout = (from: number, dur: number, h: number): Layout => {
+const computeLayout = (from: number, dur: number, h: number, place: "auto" | "below" = "auto"): Layout => {
   const fr = Array.from({ length: dur }, (_, i) => Math.min(TOTAL_FRAMES - 1, from + i));
   const topSpace = fr.map((f) => FACE_TOP[f] - GAP - SAFE.top);
   const midSpace = fr.map((f) => CAPTION_TOP - 12 - (FACE_BOT[f] + GAP));
@@ -50,7 +50,8 @@ const computeLayout = (from: number, dur: number, h: number): Layout => {
   const mt = median(topSpace), mm = median(midSpace), mf = median(midSpaceFull);
 
   let mode: "top" | "mid" | "midFull";
-  if (mt >= h * 0.85) mode = "top";
+  if (place === "below") mode = "midFull";
+  else if (mt >= h * 0.85) mode = "top";
   else if (mm >= h * 0.85) mode = "mid";
   else mode = mt >= mf ? "top" : "midFull";
 
