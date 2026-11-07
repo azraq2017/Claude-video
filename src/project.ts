@@ -30,6 +30,8 @@ export type Project = {
   sfx: Sfx[];
   flashCuts: number[];
   musicLevels?: { underVoice: number; open: number };
+  /** "exclusive": captions are hidden whenever any motion graphic is on screen (less crowded). */
+  captionMode?: "auto" | "exclusive";
 };
 
 /** Shared plumbing every project needs: timeline, face track, captions and time helpers. */

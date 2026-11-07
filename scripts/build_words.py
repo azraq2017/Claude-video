@@ -23,6 +23,18 @@ for seg in json.load(open(os.path.join(folder, "transcript.json"))):
         if core.startswith("-") and out:  # merge "berganda" + "-gandalah"
             out[-1]["w"] += txt; out[-1]["e"] = w["e"]; continue
         out.append({"w": txt, "s": w["s"], "e": w["e"], "p": raw[-1] in ".,?!"})
+# Drop Whisper "loop" hallucinations: runs of 3+ zero-length words at the same timestamp.
+clean, i = [], 0
+while i < len(out):
+    j = i
+    while j < len(out) and out[j]["e"] - out[j]["s"] < 0.005 and out[j]["s"] == out[i]["s"]:
+        j += 1
+    if j - i >= 3:
+        i = j
+        continue
+    clean.append(out[i]); i += 1
+out = clean
+
 # Per-video fixes for words Whisper mishears in context (e.g. brand names):
 # fixes.json = [{"s": <word start in source seconds>, "w": "<correct text>"}]
 fx_path = os.path.join(folder, "fixes.json")

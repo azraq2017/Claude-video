@@ -20,3 +20,4 @@ fetch v1 1AP_dyqDl0yxDyjQLioc3mSGtCoJOwh9K 85 10 40   # Tolak motor
 fetch v2 1EbTBDmRIJFTnfT3Uu5wlRQ6XfFHLVH-x 90 14 35   # Repair phone (noisier shop)
 fetch v3 1C-340--bzSDSi--lyxnPAM5uoytGpSMD 85 10 40   # Showroom 19 Motor Trading
 fetch v4 10Lv3y7Tddv-uAGlvz61waC2BQ40bqXJD 85 10 40   # Stok baru sampai
+fetch v5 1yfvjI5XHXoe6G0Zpv8iXxEWvLUsSjIVN 85 10 40   # EX5 Dream RM5,000

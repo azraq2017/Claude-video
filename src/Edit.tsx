@@ -102,11 +102,13 @@ const FollowFace: React.FC<{ layout: Layout; children: React.ReactNode }> = ({ l
 
 export const Edit: React.FC<{ project: Project }> = ({ project: p }) => {
   const { layouts, captionHidden, musicVolume } = useMemo(() => {
-    const engine = createLayoutEngine(p.tl, p.face);
+    const engine = createLayoutEngine(p.tl, p.face, { captionFree: p.captionMode === "exclusive" });
     const layouts = p.graphics.map((g) => engine.computeLayout(g.from, g.dur, g.height, g.place));
-    // Hide captions only while a big graphic has had to borrow the caption band.
+    // Hide captions only while a big graphic has had to borrow the caption band
+    // (or, in "exclusive" mode, whenever any graphic is showing).
     const captionHidden: [number, number][] = [];
-    p.graphics.forEach((g, i) => {
+    if (p.captionMode === "exclusive") p.graphics.forEach((g) => captionHidden.push([g.from - 2, g.from + g.dur + 3]));
+    else p.graphics.forEach((g, i) => {
       const c = layouts[i].coversCaptions;
       let start = -1;
       for (let k = 0; k <= c.length; k++) {

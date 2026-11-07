@@ -6,7 +6,9 @@ export const CAPTION_TOP = 1285; // captions occupy ~1285-1440
 
 export type Layout = { top: Float32Array; scale: Float32Array; coversCaptions: Uint8Array };
 
-export const createLayoutEngine = (tl: Timeline, face: FaceTrack) => {
+export const createLayoutEngine = (tl: Timeline, face: FaceTrack, opts: { captionFree?: boolean } = {}) => {
+// with captionFree the caption band is never in use while a graphic shows, so it counts as free space
+const MID_LIMIT = opts.captionFree ? SAFE.bottom : CAPTION_TOP - 12;
 const TOTAL_FRAMES = tl.total;
 /* Per output frame: where the face is (px, after punch-in zoom), dilated over
  * +-10 frames so graphics move out of the way *before* the face arrives. */
@@ -45,7 +47,7 @@ const median = (a: number[]) => [...a].sort((x, y) => x - y)[Math.floor(a.length
 const computeLayout = (from: number, dur: number, h: number, place: "auto" | "below" = "auto"): Layout => {
   const fr = Array.from({ length: dur }, (_, i) => Math.min(TOTAL_FRAMES - 1, from + i));
   const topSpace = fr.map((f) => FACE_TOP[f] - GAP - SAFE.top);
-  const midSpace = fr.map((f) => CAPTION_TOP - 12 - (FACE_BOT[f] + GAP));
+  const midSpace = fr.map((f) => MID_LIMIT - (FACE_BOT[f] + GAP));
   const midSpaceFull = fr.map((f) => SAFE.bottom - (FACE_BOT[f] + GAP));
   const mt = median(topSpace), mm = median(midSpace), mf = median(midSpaceFull);
 
@@ -64,7 +66,7 @@ const computeLayout = (from: number, dur: number, h: number, place: "auto" | "be
       rawTop.push(SAFE.top + Math.max(0, Math.min(30, space - h * s)));
     } else {
       const a = FACE_BOT[f] + GAP;
-      const limit = mode === "mid" ? CAPTION_TOP - 12 : SAFE.bottom;
+      const limit = mode === "mid" ? MID_LIMIT : SAFE.bottom;
       const s = Math.min(1, Math.max(0.55, (limit - a) / h));
       rawScale.push(s);
       rawTop.push(Math.min(a, limit - h * s));
