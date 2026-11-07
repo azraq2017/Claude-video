@@ -22,3 +22,4 @@ fetch v3 1C-340--bzSDSi--lyxnPAM5uoytGpSMD 85 10 40   # Showroom 19 Motor Tradin
 fetch v4 10Lv3y7Tddv-uAGlvz61waC2BQ40bqXJD 85 10 40   # Stok baru sampai
 fetch v5 1yfvjI5XHXoe6G0Zpv8iXxEWvLUsSjIVN 85 10 40   # EX5 Dream RM5,000
 fetch v6 1ZeFxxKl5axgK-VcB2_iRWdJTvWoR5C4a 85 10 40   # Phone lama jangan buang
+fetch v7 1ounZlu3GCzUM7UkkvCK7hzdY-awIXiD5 85 10 40   # Repair TV (voice-over)

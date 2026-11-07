@@ -15,7 +15,9 @@
     "preview:v5": "remotion render Ex5Mahal out/ex5_mahal_preview_720p.mp4 --scale=0.6666666666666666 --crf=24 --timeout=120000",
     "render:v5": "remotion render Ex5Mahal out/ex5_mahal_final.mp4 --crf=18 --timeout=120000 && ffmpeg -y -v error -i out/ex5_mahal_final.mp4 -c:v copy -af alimiter=limit=0.84:attack=2:release=50:level=false -c:a aac -b:a 256k -ar 48000 -movflags +faststart out/ex5_mahal_FINAL_1080p.mp4",
     "preview:v6": "remotion render PhoneLama out/phone_lama_preview_720p.mp4 --scale=0.6666666666666666 --crf=24 --timeout=120000",
-    "render:v6": "remotion render PhoneLama out/phone_lama_final.mp4 --crf=18 --timeout=120000 && ffmpeg -y -v error -i out/phone_lama_final.mp4 -c:v copy -af alimiter=limit=0.84:attack=2:release=50:level=false -c:a aac -b:a 256k -ar 48000 -movflags +faststart out/phone_lama_FINAL_1080p.mp4"
+    "render:v6": "remotion render PhoneLama out/phone_lama_final.mp4 --crf=18 --timeout=120000 && ffmpeg -y -v error -i out/phone_lama_final.mp4 -c:v copy -af alimiter=limit=0.84:attack=2:release=50:level=false -c:a aac -b:a 256k -ar 48000 -movflags +faststart out/phone_lama_FINAL_1080p.mp4",
+    "preview:v7": "remotion render RepairTv out/repair_tv_preview_720p.mp4 --scale=0.6666666666666666 --crf=24 --timeout=120000",
+    "render:v7": "remotion render RepairTv out/repair_tv_final.mp4 --crf=18 --timeout=120000 && ffmpeg -y -v error -i out/repair_tv_final.mp4 -c:v copy -af alimiter=limit=0.84:attack=2:release=50:level=false -c:a aac -b:a 256k -ar 48000 -movflags +faststart out/repair_tv_FINAL_1080p.mp4"
   },
   "dependencies": {
     "@fontsource/anton": "^5.3.0",
