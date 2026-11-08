@@ -66,4 +66,5 @@ export const promoDeepavali: Project = {
   plain: true,
   punches: [F(36.62), F(73.14), F(128.12)],
   musicLevels: { underVoice: 0.07, open: 0.2 },
+  outro: true,
 };
