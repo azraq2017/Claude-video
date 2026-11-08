@@ -54,8 +54,17 @@ export const QuoteLabel: React.FC<{
   left?: number;
   top?: number;
   fontSize?: number;
-}> = ({ lines, dur, highlight, left = 250, top = 1090, fontSize = 60 }) => {
+}> = ({ lines, dur, highlight, left: leftIn = 250, top = 1090, fontSize: fsIn }) => {
   const frame = useCurrentFrame();
+  // auto-fit inside the safe zone (right edge x=930): shrink, and if still long, start further left
+  const maxChars = Math.max(...lines.map((l) => [...l].length));
+  const fit = (l: number) => Math.floor((930 - l) / (maxChars * 0.6 + 0.5));
+  let left = leftIn;
+  let fontSize = fsIn ?? Math.min(60, fit(left));
+  if (!fsIn && fontSize < 50) {
+    left = Math.max(80, Math.min(leftIn, 930 - Math.ceil(maxChars * 0.6 + 0.5) * 54));
+    fontSize = Math.min(60, fit(left));
+  }
   const { fps } = useVideoConfig();
   // gentle: fade/slide in, fade out. No bounce — this is the calm style.
   const inn = interpolate(frame, [0, 8], [0, 1], { extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });

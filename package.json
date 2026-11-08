@@ -25,7 +25,9 @@
     "preview:v10": "remotion render OfferBos out/offer_bos_preview_720p.mp4 --scale=0.6666666666666666 --crf=24 --timeout=120000",
     "render:v10": "remotion render OfferBos out/offer_bos_final.mp4 --crf=18 --timeout=120000 && ffmpeg -y -v error -i out/offer_bos_final.mp4 -c:v copy -af alimiter=limit=0.84:attack=2:release=50:level=false -c:a aac -b:a 256k -ar 48000 -movflags +faststart out/offer_bos_FINAL_1080p.mp4",
     "preview:v11": "remotion render AntiScam out/anti_scam_preview_720p.mp4 --scale=0.6666666666666666 --crf=24 --timeout=120000",
-    "render:v11": "remotion render AntiScam out/anti_scam_final.mp4 --crf=18 --timeout=120000 && ffmpeg -y -v error -i out/anti_scam_final.mp4 -c:v copy -af alimiter=limit=0.84:attack=2:release=50:level=false -c:a aac -b:a 256k -ar 48000 -movflags +faststart out/anti_scam_FINAL_1080p.mp4"
+    "render:v11": "remotion render AntiScam out/anti_scam_final.mp4 --crf=18 --timeout=120000 && ffmpeg -y -v error -i out/anti_scam_final.mp4 -c:v copy -af alimiter=limit=0.84:attack=2:release=50:level=false -c:a aac -b:a 256k -ar 48000 -movflags +faststart out/anti_scam_FINAL_1080p.mp4",
+    "preview:v12": "remotion render TolakPhone out/tolak_phone_preview_720p.mp4 --scale=0.6666666666666666 --crf=24 --timeout=120000",
+    "render:v12": "remotion render TolakPhone out/tolak_phone_final.mp4 --crf=18 --timeout=120000 && ffmpeg -y -v error -i out/tolak_phone_final.mp4 -c:v copy -af alimiter=limit=0.84:attack=2:release=50:level=false -c:a aac -b:a 256k -ar 48000 -movflags +faststart out/tolak_phone_FINAL_1080p.mp4"
   },
   "dependencies": {
     "@fontsource/anton": "^5.3.0",

@@ -42,3 +42,4 @@ if [ ! -f public/v10/source.mp4 ]; then
 fi
 fetch v10 1DF9NGsgOQ0PCbDgr4F5_KeWGSNeGW28S 85 10 40   # Offer bos RM1,650 (graded)
 fetch v11 1uAzZr1pIPasM6_qjR2WGif_WK3YeKfRX 85 10 40   # Tas Tech anti-scam (no 19MTR outro)
+fetch v12 1-r7vA3dDmMjU0f7Z7HnUGt9-pas_v_Sa 85 10 40   # Tas Tech tolak phone
