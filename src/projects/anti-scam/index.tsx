@@ -8,7 +8,7 @@ import faces from "./faces.json";
 /**
  * Video 11 — Tas Tech: "phone jackpot RM399" + how to avoid scams (shop is real,
  * pay only to the company account). MINIMAL STYLE, no subtitles.
- * Tas Tech brand → no 19 Motor Trading outro.
+ * Tas Tech brand → ends with the Tas Tech outro (not the 19 Motor Trading one).
  * One stress hit: the jackpot price. Everything else is calm quote labels.
  */
 const base = createBase({ clips: edl, faces: faces as number[][], words, keywords: [] });
@@ -61,4 +61,6 @@ export const antiScam: Project = {
   plain: true,
   punches: [F(4.45)],
   musicLevels: { underVoice: 0.07, open: 0.2 },
+  outro: true,
+  outroBrand: "tastech",
 };

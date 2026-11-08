@@ -6,6 +6,7 @@ import { Placed } from "./components/Graphics";
 import { createLayoutEngine, Layout } from "./layout";
 import { projectFrames, type Project } from "./project";
 import { Outro19, OUTRO_FRAMES, OUTRO_OVERLAP } from "./brand/Outro19";
+import { OutroTasTech } from "./brand/OutroTasTech";
 
 /* ----------------------------- VIDEO ----------------------------- */
 
@@ -159,7 +160,11 @@ export const Edit: React.FC<{ project: Project }> = ({ project: p }) => {
 
       {p.outro && (
         <Sequence from={p.tl.total - OUTRO_OVERLAP} durationInFrames={OUTRO_FRAMES} name="outro">
-          <Outro19 {...(p.outro === true ? {} : p.outro)} />
+          {p.outroBrand === "tastech" ? (
+            <OutroTasTech {...(p.outro === true ? {} : p.outro)} />
+          ) : (
+            <Outro19 {...(p.outro === true ? {} : p.outro)} />
+          )}
         </Sequence>
       )}
 

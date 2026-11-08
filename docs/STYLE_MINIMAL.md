@@ -45,7 +45,10 @@ Learned from two reference videos. Use this preset for future edits unless the u
 - Every **19 Motor Trading** video ends with the logo outro: set `outro: true` on the project
   (4s; wipes in over the last 10 frames of the video). Override lines with
   `outro: { sub: "...", cta: "..." }`, or `cta: ""` to hide the CTA chip.
-- Not for **Tas Tech** (phone/TV repair) videos — different brand.
+- **Tas Tech** (phone/TV/laptop repair) videos use their own outro: `outro: true, outroBrand: "tastech"`.
+  Blue `#0C2AB0` / yellow `#FEC401`; 30° wipe (logo's isometric angle), blocks slide in along the
+  isometric axis, **® pops in** (registered trademark — always keep it), "TAS TECH / Repair Phone · TV · Laptop /
+  Sungai Petani · DM / Lokasi kat bio". Logo traced in `src/brand/tastech-paths.ts`; preview composition `OutroTasTech`.
 - Sequence: navy panel wipes up on a 45° edge with red trim → M, T, R rise → "19" drops with one
   soft hit → wings slide out → light sweep → "19 MOTOR TRADING / Sungai Petani, Kedah / DM · Lokasi kat bio".
 - Colours: navy `#1F334C`, red `#E22943`, white. Logo is traced to vectors in `src/brand/logo-paths.ts`

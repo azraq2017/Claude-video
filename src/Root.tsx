@@ -15,6 +15,7 @@ import { promoDeepavali } from "./projects/promo-deepavali";
 import { offerBos } from "./projects/offer-bos";
 import { antiScam } from "./projects/anti-scam";
 import { OutroPreview, OUTRO_FRAMES } from "./brand/Outro19";
+import { OutroTasTechPreview, TT_OUTRO_FRAMES } from "./brand/OutroTasTech";
 
 const PROJECTS: Project[] = [tolakMotor, repairPhone, showroom, stokBaru, ex5Mahal, phoneLama, repairTv, stokWalkthrough, minimalDemo, promoDeepavali, offerBos, antiScam];
 
@@ -27,6 +28,7 @@ const COMPONENTS = Object.fromEntries(
 export const RemotionRoot: React.FC = () => (
   <>
     <Composition id="Outro19" component={OutroPreview} durationInFrames={OUTRO_FRAMES} fps={FPS} width={1080} height={1920} />
+    <Composition id="OutroTasTech" component={OutroTasTechPreview} durationInFrames={TT_OUTRO_FRAMES} fps={FPS} width={1080} height={1920} />
     {PROJECTS.map((p) => (
       <Composition
         key={p.id}

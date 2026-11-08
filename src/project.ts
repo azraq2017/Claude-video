@@ -39,6 +39,8 @@ export type Project = {
   punches?: number[];
   /** Append the 19 Motor Trading logo outro (true = defaults, or override the text lines). */
   outro?: boolean | OutroProps;
+  /** Which brand outro to use (default 19 Motor Trading). */
+  outroBrand?: "19mtr" | "tastech";
 };
 
 /** Total output length including the outro (which overlaps the last OUTRO_OVERLAP frames). */

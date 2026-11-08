@@ -8,4 +8,5 @@
 - Always: transcribe first (Whisper large-v3), keep faces clear, TikTok/IG safe zone,
   show a 720p preview before any final render, final = `npm run render:vN` (includes limiter).
 - Reply to the user in Malay unless they write in English.
-- **19 Motor Trading videos end with the brand outro** (`outro: true`, see docs/STYLE_MINIMAL.md). Tas Tech videos do not.
+- **Every video ends with its brand outro** (see docs/STYLE_MINIMAL.md): 19 Motor Trading → `outro: true`;
+  Tas Tech (phone/TV/laptop repair) → `outro: true, outroBrand: "tastech"` (logo carries ® — registered trademark).
