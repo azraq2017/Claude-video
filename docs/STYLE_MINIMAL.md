@@ -10,7 +10,7 @@ scooter, 93s). Use this preset for future edits unless the user asks otherwise.
 | On-screen text | ONE label only: teal quote badge + black bold text on white line-boxes, left-aligned at body height, ~5s | `QuoteLabel` — model + price **up front** |
 | Transition | Real "SOLD" paper shot, no graphic | Use real footage beats; no flashy transitions |
 | Cutting | Long natural takes, ~4 cuts in 93s, laughs & small pauses kept | Cut only dead air (>1.5s), false starts and real repeats |
-| Captions | None | `captionMode: "none"` (offer clean captions only if asked) |
+| Captions | None | `captionMode: "none"` — **no subtitles unless the user explicitly asks** (user decision, Nov 2026) |
 | SFX | None | None — except on stress hits |
 | Music | Upbeat bed, loud in b-roll/walking parts, ducked under talk | Funky Chunk / user-supplied, `musicLevels ≈ { underVoice: 0.07, open: 0.2 }` |
 | Look | No vignette, no slow push-in | `plain: true` |
