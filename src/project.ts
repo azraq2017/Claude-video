@@ -15,7 +15,7 @@ export type Gfx = {
   from: number; // output frame
   dur: number; // frames
   height: number; // approx px height, for face-aware placement
-  place?: "auto" | "below"; // "below": always under the chin, may take over the caption band
+  place?: "auto" | "below" | "fixed"; // "below": under the chin; "fixed": component positions itself (minimal style)
   render: (dur: number) => React.ReactNode;
 };
 
@@ -31,9 +31,11 @@ export type Project = {
   flashCuts: number[];
   musicLevels?: { underVoice: number; open: number };
   /** "exclusive": captions are hidden whenever any motion graphic is on screen (less crowded). */
-  captionMode?: "auto" | "exclusive";
+  captionMode?: "auto" | "exclusive" | "none";
   /** "Captions only" look: no vignette, no slow push-in, no flash cuts. */
   plain?: boolean;
+  /** Output frames that get a quick punch-in zoom (minimal style stress hits). */
+  punches?: number[];
 };
 
 /** Shared plumbing every project needs: timeline, face track, captions and time helpers. */

@@ -10,8 +10,9 @@ import { ex5Mahal } from "./projects/ex5-mahal";
 import { phoneLama } from "./projects/phone-lama";
 import { repairTv } from "./projects/repair-tv";
 import { stokWalkthrough } from "./projects/stok-walkthrough";
+import { minimalDemo } from "./projects/minimal-demo";
 
-const PROJECTS: Project[] = [tolakMotor, repairPhone, showroom, stokBaru, ex5Mahal, phoneLama, repairTv, stokWalkthrough];
+const PROJECTS: Project[] = [tolakMotor, repairPhone, showroom, stokBaru, ex5Mahal, phoneLama, repairTv, stokWalkthrough, minimalDemo];
 
 // Projects hold functions/typed arrays, so pass them by closure instead of
 // (JSON-serialised) defaultProps.

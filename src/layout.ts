@@ -44,7 +44,7 @@ const median = (a: number[]) => [...a].sort((x, y) => x - y)[Math.floor(a.length
  * shrinks when space gets tight. Below-chin graphics may borrow the caption
  * band; captions are hidden for those frames.
  */
-const computeLayout = (from: number, dur: number, h: number, place: "auto" | "below" = "auto"): Layout => {
+const computeLayout = (from: number, dur: number, h: number, place: "auto" | "below" | "fixed" = "auto"): Layout => {
   const fr = Array.from({ length: dur }, (_, i) => Math.min(TOTAL_FRAMES - 1, from + i));
   const topSpace = fr.map((f) => FACE_TOP[f] - GAP - SAFE.top);
   const midSpace = fr.map((f) => MID_LIMIT - (FACE_BOT[f] + GAP));

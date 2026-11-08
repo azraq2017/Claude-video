@@ -8,14 +8,26 @@ import type { Project } from "./project";
 
 /* ----------------------------- VIDEO ----------------------------- */
 
-const ClipVideo: React.FC<{ p: Project; srcStart: number; frames: number; zoom: number }> = ({ p, srcStart, frames, zoom }) => {
+const ClipVideo: React.FC<{ p: Project; srcStart: number; frames: number; zoom: number; from: number }> = ({
+  p,
+  srcStart,
+  frames,
+  zoom,
+  from,
+}) => {
   const frame = useCurrentFrame();
+  // stress punch-in: +7% that eases back over ~0.5s
+  const abs = from + frame;
+  const punch = (p.punches ?? []).reduce(
+    (m, f) => Math.max(m, interpolate(abs - f, [0, 2, 16], [0, 0.07, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })),
+    0,
+  );
   // anchor the punch-in on the speaker's face so it never gets cropped
   const face = p.face.faceAt(srcStart + 0.3);
   const ox = (face.x + face.w / 2) * 100;
   const oy = (face.y + face.h / 2) * 100;
   // slow push-in across each clip keeps static shots alive
-  const z = zoom * (p.plain ? 1 : interpolate(frame, [0, frames], [1, 1.025]));
+  const z = zoom * (p.plain ? 1 : interpolate(frame, [0, frames], [1, 1.025])) * (1 + punch);
   return (
     <AbsoluteFill style={{ transform: `scale(${z})`, transformOrigin: `${ox}% ${oy}%` }}>
       <OffthreadVideo
@@ -123,7 +135,7 @@ export const Edit: React.FC<{ project: Project }> = ({ project: p }) => {
     <AbsoluteFill style={{ background: "#000" }}>
       {p.tl.placed.map((c) => (
         <Sequence key={`v${c.index}`} from={c.from} durationInFrames={c.frames} name={`clip ${c.index}`}>
-          <ClipVideo p={p} srcStart={c.srcStart} frames={c.frames} zoom={c.zoom} />
+          <ClipVideo p={p} srcStart={c.srcStart} frames={c.frames} zoom={c.zoom} from={c.from} />
           <VoiceClip src={p.media.voice} srcStart={c.srcStart} frames={c.frames} muteAfter={c.muteAfter} />
         </Sequence>
       ))}
@@ -132,11 +144,11 @@ export const Edit: React.FC<{ project: Project }> = ({ project: p }) => {
 
       {p.graphics.map((g, i) => (
         <Sequence key={`g${i}`} from={g.from} durationInFrames={g.dur} name={`gfx ${i}`}>
-          <FollowFace layout={layouts[i]}>{g.render(g.dur)}</FollowFace>
+          {g.place === "fixed" ? g.render(g.dur) : <FollowFace layout={layouts[i]}>{g.render(g.dur)}</FollowFace>}
         </Sequence>
       ))}
 
-      <Captions pages={p.captions} hiddenRanges={captionHidden} />
+      {p.captionMode !== "none" && <Captions pages={p.captions} hiddenRanges={captionHidden} />}
 
       {p.flashCuts.map((f, i) => (
         <Sequence key={`fl${i}`} from={f} durationInFrames={6}>
