@@ -9,6 +9,7 @@ Vertical 1080×1920 edits for TikTok / IG Reels. One shared engine, one folder p
 | `Showroom` | 19 Motor Trading — Y15ZR, LC135, skuter | 86s |
 | `StokBaru` | Stok baru sampai — E-Bonus, Lagenda 2022, LC (min 1:31) | 94s |
 | `PromoDeepavali` | Promo Deepavali walkthrough — first edit in the minimal style | 118s |
+| `Outro19` | 19 Motor Trading logo outro (4s), reusable via `outro: true` | 4s |
 | `StokWalkthrough` | Stok 19 Motor Trading walkthrough — captions only | 101s |
 | `RepairTv` | Tas Tech repair TV — skrin pecah tak berbaloi, backlight, TV second hand (voice-over) | 101s |
 | `PhoneLama` | Phone lama/rosak jangan buang — tolak dapat duit (e-waste) | 94s |

@@ -4,7 +4,8 @@ import { FPS } from "./timeline";
 import { Captions } from "./components/Captions";
 import { Placed } from "./components/Graphics";
 import { createLayoutEngine, Layout } from "./layout";
-import type { Project } from "./project";
+import { projectFrames, type Project } from "./project";
+import { Outro19, OUTRO_FRAMES, OUTRO_OVERLAP } from "./brand/Outro19";
 
 /* ----------------------------- VIDEO ----------------------------- */
 
@@ -62,7 +63,7 @@ const VoiceClip: React.FC<{ src: string; srcStart: number; frames: number; muteA
 
 /** Music ducking curve: low under speech, opens up in gaps, smoothed. */
 const makeMusicVolume = (p: Project) => {
-  const T = p.tl.total;
+  const T = projectFrames(p);
   const { underVoice, open } = p.musicLevels ?? { underVoice: 0.055, open: 0.16 };
   const speaking = new Float32Array(T);
   for (const [a, b] of p.speech) for (let f = Math.max(0, a - 3); f < Math.min(T, b + 3); f++) speaking[f] = 1;
@@ -155,6 +156,12 @@ export const Edit: React.FC<{ project: Project }> = ({ project: p }) => {
           <Flash />
         </Sequence>
       ))}
+
+      {p.outro && (
+        <Sequence from={p.tl.total - OUTRO_OVERLAP} durationInFrames={OUTRO_FRAMES} name="outro">
+          <Outro19 {...(p.outro === true ? {} : p.outro)} />
+        </Sequence>
+      )}
 
       <Audio src={staticFile(p.media.music)} volume={musicVolume} loop />
 

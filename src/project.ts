@@ -2,6 +2,7 @@ import type React from "react";
 import { createTimeline, Clip, Timeline } from "./timeline";
 import { createFaceTrack, FaceTrack } from "./face";
 import { buildCaptions, CapPage, Word } from "./captions";
+import { OUTRO_FRAMES, OUTRO_OVERLAP, type OutroProps } from "./brand/Outro19";
 
 export type Occ = "first" | "last";
 
@@ -36,7 +37,12 @@ export type Project = {
   plain?: boolean;
   /** Output frames that get a quick punch-in zoom (minimal style stress hits). */
   punches?: number[];
+  /** Append the 19 Motor Trading logo outro (true = defaults, or override the text lines). */
+  outro?: boolean | OutroProps;
 };
+
+/** Total output length including the outro (which overlaps the last OUTRO_OVERLAP frames). */
+export const projectFrames = (p: Project) => p.tl.total + (p.outro ? OUTRO_FRAMES - OUTRO_OVERLAP : 0);
 
 /** Shared plumbing every project needs: timeline, face track, captions and time helpers. */
 export const createBase = (opts: { clips: Clip[]; faces: number[][]; words: Word[]; keywords: string[] }) => {

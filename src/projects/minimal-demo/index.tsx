@@ -48,4 +48,5 @@ export const minimalDemo: Project = {
   plain: true,
   punches: [F(21.88), F(39.74)],
   musicLevels: { underVoice: 0.07, open: 0.2 },
+  outro: true,
 };

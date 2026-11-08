@@ -41,6 +41,16 @@ Learned from two reference videos. Use this preset for future edits unless the u
 4. Still respect TikTok/IG safe zones (`src/safe.ts`) and never cover faces.
 5. Minimum length rules from the user still apply when given (e.g. >= 1:31).
 
+## Brand outro (19 Motor Trading)
+- Every **19 Motor Trading** video ends with the logo outro: set `outro: true` on the project
+  (4s; wipes in over the last 10 frames of the video). Override lines with
+  `outro: { sub: "...", cta: "..." }`, or `cta: ""` to hide the CTA chip.
+- Not for **Tas Tech** (phone/TV repair) videos — different brand.
+- Sequence: navy panel wipes up on a 45° edge with red trim → M, T, R rise → "19" drops with one
+  soft hit → wings slide out → light sweep → "19 MOTOR TRADING / Sungai Petani, Kedah / DM · Lokasi kat bio".
+- Colours: navy `#1F334C`, red `#E22943`, white. Logo is traced to vectors in `src/brand/logo-paths.ts`
+  from `public/brand/19mtr_logo.png`. Standalone preview: composition `Outro19`.
+
 ## Code
 - Components: `src/components/Minimal.tsx` (`QuoteLabel`, `PricePop`, `StressHit`, `STRESS_TRIGGERS`)
 - Project flags: `captionMode: "none"`, `plain: true`, `punches: [...]`, `place: "fixed"` on graphics

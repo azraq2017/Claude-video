@@ -1,7 +1,7 @@
 import { Composition } from "remotion";
 import { Edit } from "./Edit";
 import { FPS } from "./timeline";
-import type { Project } from "./project";
+import { projectFrames, type Project } from "./project";
 import { tolakMotor } from "./projects/tolak-motor";
 import { repairPhone } from "./projects/repair-phone";
 import { showroom } from "./projects/showroom";
@@ -12,6 +12,7 @@ import { repairTv } from "./projects/repair-tv";
 import { stokWalkthrough } from "./projects/stok-walkthrough";
 import { minimalDemo } from "./projects/minimal-demo";
 import { promoDeepavali } from "./projects/promo-deepavali";
+import { OutroPreview, OUTRO_FRAMES } from "./brand/Outro19";
 
 const PROJECTS: Project[] = [tolakMotor, repairPhone, showroom, stokBaru, ex5Mahal, phoneLama, repairTv, stokWalkthrough, minimalDemo, promoDeepavali];
 
@@ -23,12 +24,13 @@ const COMPONENTS = Object.fromEntries(
 
 export const RemotionRoot: React.FC = () => (
   <>
+    <Composition id="Outro19" component={OutroPreview} durationInFrames={OUTRO_FRAMES} fps={FPS} width={1080} height={1920} />
     {PROJECTS.map((p) => (
       <Composition
         key={p.id}
         id={p.id}
         component={COMPONENTS[p.id]}
-        durationInFrames={p.tl.total}
+        durationInFrames={projectFrames(p)}
         fps={FPS}
         width={1080}
         height={1920}
