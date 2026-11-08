@@ -41,3 +41,4 @@ if [ ! -f public/v10/source.mp4 ]; then
   rm public/v10/raw.mp4
 fi
 fetch v10 1DF9NGsgOQ0PCbDgr4F5_KeWGSNeGW28S 85 10 40   # Offer bos RM1,650 (graded)
+fetch v11 1uAzZr1pIPasM6_qjR2WGif_WK3YeKfRX 85 10 40   # Tas Tech anti-scam (no 19MTR outro)
