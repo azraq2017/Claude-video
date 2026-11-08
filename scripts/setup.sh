@@ -31,3 +31,4 @@ if [ ! -f public/v8/source.mp4 ]; then
   rm public/v8/raw.mp4
 fi
 fetch v8 1f4j9A2knFC79GzKs64noR6ifmCyB0q_L 85 10 40   # Stok walkthrough (captions only)
+fetch v9 1icuezGHs9zc5DMXNHgfKjCtFAKRejiHA 85 10 40   # Promo Deepavali (minimal style)
