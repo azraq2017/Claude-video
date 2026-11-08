@@ -51,6 +51,12 @@ Learned from two reference videos. Use this preset for future edits unless the u
 - Colours: navy `#1F334C`, red `#E22943`, white. Logo is traced to vectors in `src/brand/logo-paths.ts`
   from `public/brand/19mtr_logo.png`. Standalone preview: composition `Outro19`.
 
+## Dark footage
+If the user says footage looks dark, grade the SOURCE with ffmpeg before editing (keeps Remotion fast):
+`curves=all='0/0 0.18/0.27 0.45/0.53 0.8/0.84 1/1',eq=saturation=1.1:contrast=1.03,unsharp=5:5:0.4`
+— lifts shadows/mids, keeps highlights (sky) intact. Add a second, stronger shadow curve with
+`enable='lt(t,X)'` for backlit shots. Always show a before/after still.
+
 ## Code
 - Components: `src/components/Minimal.tsx` (`QuoteLabel`, `PricePop`, `StressHit`, `STRESS_TRIGGERS`)
 - Project flags: `captionMode: "none"`, `plain: true`, `punches: [...]`, `place: "fixed"` on graphics

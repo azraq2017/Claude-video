@@ -12,9 +12,10 @@ import { repairTv } from "./projects/repair-tv";
 import { stokWalkthrough } from "./projects/stok-walkthrough";
 import { minimalDemo } from "./projects/minimal-demo";
 import { promoDeepavali } from "./projects/promo-deepavali";
+import { offerBos } from "./projects/offer-bos";
 import { OutroPreview, OUTRO_FRAMES } from "./brand/Outro19";
 
-const PROJECTS: Project[] = [tolakMotor, repairPhone, showroom, stokBaru, ex5Mahal, phoneLama, repairTv, stokWalkthrough, minimalDemo, promoDeepavali];
+const PROJECTS: Project[] = [tolakMotor, repairPhone, showroom, stokBaru, ex5Mahal, phoneLama, repairTv, stokWalkthrough, minimalDemo, promoDeepavali, offerBos];
 
 // Projects hold functions/typed arrays, so pass them by closure instead of
 // (JSON-serialised) defaultProps.

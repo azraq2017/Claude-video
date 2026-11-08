@@ -32,3 +32,12 @@ if [ ! -f public/v8/source.mp4 ]; then
 fi
 fetch v8 1f4j9A2knFC79GzKs64noR6ifmCyB0q_L 85 10 40   # Stok walkthrough (captions only)
 fetch v9 1icuezGHs9zc5DMXNHgfKjCtFAKRejiHA 85 10 40   # Promo Deepavali (minimal style)
+# v10 is graded before editing: shadow lift + saturation, extra lift on the backlit opening (first 14.8s)
+if [ ! -f public/v10/source.mp4 ]; then
+  mkdir -p public/v10
+  curl -sSL -o public/v10/raw.mp4 "https://drive.usercontent.google.com/download?id=1DF9NGsgOQ0PCbDgr4F5_KeWGSNeGW28S&export=download&confirm=t"
+  ffmpeg -v error -y -i public/v10/raw.mp4 -vf "curves=all='0/0 0.18/0.27 0.45/0.53 0.8/0.84 1/1',eq=saturation=1.1:contrast=1.03,curves=all='0/0 0.15/0.24 0.4/0.48 1/1':enable='lt(t,14.8)',unsharp=5:5:0.4" \
+    -c:v libx264 -preset fast -crf 17 -pix_fmt yuv420p -c:a copy -movflags +faststart public/v10/source.mp4
+  rm public/v10/raw.mp4
+fi
+fetch v10 1DF9NGsgOQ0PCbDgr4F5_KeWGSNeGW28S 85 10 40   # Offer bos RM1,650 (graded)
