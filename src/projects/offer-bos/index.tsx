@@ -45,7 +45,7 @@ const GRAPHICS: Gfx[] = [
   fixed(gfx(103.8, 106.9, 0, (d) => <StressHit dur={d} kind="trade-in" lines={["Motor rosak?", "Kami terima"]} top={under(103.8, 280)} />)),
 
   fixed(gfx(121.3, 123.6, 0, (d) => <PricePop dur={d} price="RM2,500" model="Motor bajet" left={120} top={under(121.3)} fontSize={150} />)),
-  fixed(gfx(129.1, 132.2, 0, (d) => <QuoteLabel dur={d} lines={["SYM E-Smart", "ala-ala EX5"]} top={under(129.1, 260)} />)),
+  fixed(gfx(129.1, 134.1, 0, (d) => <PricePop dur={d} price="RM2,500" model="SYM E-Smart · ala-ala EX5" left={120} top={under(129.1)} fontSize={150} />)),
   // urgency at the end (calm)
   fixed(gfx(159.4, 164.9, 0, (d) => <QuoteLabel dur={d} lines={["Kriss MR1 RM1,650", "Seunit je — cepat!"]} highlight={0} top={under(159.4, 260)} />)),
 ];
