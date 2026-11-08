@@ -85,7 +85,7 @@ export const Outro19: React.FC<OutroProps> = ({
               </clipPath>
             ))}
             <clipPath id="mtrClip">
-              <path d={LOGO.mtr} />
+              <path d={`${LOGO.mtr} ${LOGO.rHole}`} clipRule="evenodd" />
             </clipPath>
             <linearGradient id="shine" x1="0" x2="1" y1="0" y2="0">
               <stop offset="0" stopColor="#fff" stopOpacity="0" />
@@ -96,10 +96,10 @@ export const Outro19: React.FC<OutroProps> = ({
 
           {/* MTR, one band per letter (whole shape once all three have landed → no seams) */}
           {bands.every((b) => b.t >= 1) ? (
-            <path d={LOGO.mtr} fill={BRAND.white} />
+            <path d={`${LOGO.mtr} ${LOGO.rHole}`} fill={BRAND.white} fillRule="evenodd" />
           ) : bands.map((b, i) => (
             <g key={i} clipPath={`url(#band${i})`} transform={`translate(0 ${(1 - b.t) * 40})`}>
-              <path d={LOGO.mtr} fill={BRAND.white} />
+              <path d={`${LOGO.mtr} ${LOGO.rHole}`} fill={BRAND.white} fillRule="evenodd" />
             </g>
           ))}
           {/* light sweep across the letters */}
