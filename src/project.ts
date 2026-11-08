@@ -32,6 +32,8 @@ export type Project = {
   musicLevels?: { underVoice: number; open: number };
   /** "exclusive": captions are hidden whenever any motion graphic is on screen (less crowded). */
   captionMode?: "auto" | "exclusive";
+  /** "Captions only" look: no vignette, no slow push-in, no flash cuts. */
+  plain?: boolean;
 };
 
 /** Shared plumbing every project needs: timeline, face track, captions and time helpers. */

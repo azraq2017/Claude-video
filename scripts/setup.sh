@@ -23,3 +23,11 @@ fetch v4 10Lv3y7Tddv-uAGlvz61waC2BQ40bqXJD 85 10 40   # Stok baru sampai
 fetch v5 1yfvjI5XHXoe6G0Zpv8iXxEWvLUsSjIVN 85 10 40   # EX5 Dream RM5,000
 fetch v6 1ZeFxxKl5axgK-VcB2_iRWdJTvWoR5C4a 85 10 40   # Phone lama jangan buang
 fetch v7 1ounZlu3GCzUM7UkkvCK7hzdY-awIXiD5 85 10 40   # Repair TV (voice-over)
+# v8 arrives as rotated HEVC 1920x1080: transcode to upright H.264 1080x1920 first
+if [ ! -f public/v8/source.mp4 ]; then
+  mkdir -p public/v8
+  curl -sSL -o public/v8/raw.mp4 "https://drive.usercontent.google.com/download?id=1f4j9A2knFC79GzKs64noR6ifmCyB0q_L&export=download&confirm=t"
+  ffmpeg -v error -y -i public/v8/raw.mp4 -c:v libx264 -preset fast -crf 17 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart public/v8/source.mp4
+  rm public/v8/raw.mp4
+fi
+fetch v8 1f4j9A2knFC79GzKs64noR6ifmCyB0q_L 85 10 40   # Stok walkthrough (captions only)

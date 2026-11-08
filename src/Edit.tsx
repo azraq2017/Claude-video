@@ -15,7 +15,7 @@ const ClipVideo: React.FC<{ p: Project; srcStart: number; frames: number; zoom: 
   const ox = (face.x + face.w / 2) * 100;
   const oy = (face.y + face.h / 2) * 100;
   // slow push-in across each clip keeps static shots alive
-  const z = zoom * interpolate(frame, [0, frames], [1, 1.025]);
+  const z = zoom * (p.plain ? 1 : interpolate(frame, [0, frames], [1, 1.025]));
   return (
     <AbsoluteFill style={{ transform: `scale(${z})`, transformOrigin: `${ox}% ${oy}%` }}>
       <OffthreadVideo
@@ -128,7 +128,7 @@ export const Edit: React.FC<{ project: Project }> = ({ project: p }) => {
         </Sequence>
       ))}
 
-      <Vignette />
+      {!p.plain && <Vignette />}
 
       {p.graphics.map((g, i) => (
         <Sequence key={`g${i}`} from={g.from} durationInFrames={g.dur} name={`gfx ${i}`}>
