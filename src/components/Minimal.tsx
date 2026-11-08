@@ -199,3 +199,95 @@ export const STRESS_TRIGGERS: Record<StressKind, RegExp> = {
   jackpot: /^(jackpot|bertuah|termurah|serendah|gila-gila)$/i,
   promo: /^(promo|promosi|promotion|diskaun|discount|offer|free|percuma|sale)$/i,
 };
+
+/* ------------------------------------------------------------------ */
+/* Price pop — learned from the "Motor lelong minggu ini" reference    */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Big yellow→orange price with a thick black outline and thin white rim.
+ * Characters pop in one by one (~2 frames each) with a small tilt that settles,
+ * starting on the spoken price. Place it on/next to the bike being discussed,
+ * never on a face. Optional small model tag above, in the quote-label style.
+ */
+export const PricePop: React.FC<{
+  price: string;
+  dur: number;
+  model?: string;
+  left: number;
+  top: number;
+  fontSize?: number;
+}> = ({ price, dur, model, left, top, fontSize = 120 }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const out = interpolate(frame, [dur - 6, dur], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const chars = [...price];
+  const PER = 2; // frames per character
+  const tag = model ? interpolate(frame, [chars.length * PER, chars.length * PER + 8], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) }) : 0;
+  return (
+    <AbsoluteFill>
+      <div style={{ position: "absolute", left, top, opacity: out, display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+        {model && (
+          <div
+            style={{
+              fontFamily: MONT,
+              fontWeight: 800,
+              fontSize: fontSize * 0.36,
+              color: MIN.ink,
+              background: MIN.paper,
+              padding: `0 ${fontSize * 0.1}px`,
+              marginBottom: 4,
+              marginLeft: fontSize * 0.06,
+              clipPath: `inset(0 ${(1 - tag) * 100}% 0 0)`,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {model}
+          </div>
+        )}
+        <div style={{ display: "flex", whiteSpace: "nowrap" }}>
+          {chars.map((ch, i) => {
+            const p = spring({ frame: frame - i * PER, fps, config: { damping: 10, stiffness: 300, mass: 0.5 } });
+            if (frame < i * PER) return <span key={i} style={{ opacity: 0, fontSize, fontFamily: MONT, fontWeight: 900 }}>{ch}</span>;
+            const base: React.CSSProperties = {
+              gridArea: "1 / 1",
+              fontFamily: MONT,
+              fontWeight: 900,
+              fontSize,
+              lineHeight: 1,
+            };
+            const k = fontSize * 0.06; // outline width
+            return (
+              <span
+                key={i}
+                style={{
+                  display: "inline-grid",
+                  transform: `scale(${interpolate(p, [0, 1], [1.5, 1])}) rotate(${interpolate(p, [0, 1], [-14, 0])}deg)`,
+                  transformOrigin: "50% 90%",
+                  filter: `drop-shadow(0 ${fontSize * 0.04}px 0 rgba(0,0,0,0.35))`,
+                }}
+              >
+                {/* 1: thin white rim */}
+                <span style={{ ...base, color: "#fff", WebkitTextStroke: `${k * 2 + fontSize * 0.05}px #fff` }}>{ch}</span>
+                {/* 2: thick black outline */}
+                <span style={{ ...base, color: "#111", WebkitTextStroke: `${k * 2}px #111` }}>{ch}</span>
+                {/* 3: gradient fill */}
+                <span
+                  style={{
+                    ...base,
+                    background: "linear-gradient(180deg, #FFE14D 0%, #FFC21A 55%, #F59E0B 100%)",
+                    WebkitBackgroundClip: "text",
+                    backgroundClip: "text",
+                    color: "transparent",
+                  }}
+                >
+                  {ch}
+                </span>
+              </span>
+            );
+          })}
+        </div>
+      </div>
+    </AbsoluteFill>
+  );
+};

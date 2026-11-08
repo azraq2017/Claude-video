@@ -1,5 +1,5 @@
 import React from "react";
-import { QuoteLabel, StressHit } from "../../components/Minimal";
+import { PricePop, QuoteLabel, StressHit } from "../../components/Minimal";
 import { createBase, Gfx, Project, Sfx } from "../../project";
 import words from "../showroom/words.json";
 import faces from "../showroom/faces.json";
@@ -26,7 +26,8 @@ const base = createBase({
 const { F, gfx, s, tl } = base;
 
 const GRAPHICS: Gfx[] = [
-  { ...gfx(3.95, 13.68, 0, (d) => <QuoteLabel dur={d} lines={["Yamaha Y15ZR", "Bawah RM7,000"]} highlight={1} />), place: "fixed" },
+  { ...gfx(3.95, 7.4, 0, (d) => <QuoteLabel dur={d} lines={["Y15ZR siap restore", "minggu ini!"]} top={330} />), place: "fixed" },
+  { ...gfx(12.98, 21.85, 0, (d) => <PricePop dur={d} price="RM7,000" model="Yamaha Y15ZR · bawah" left={80} top={1120} fontSize={160} />), place: "fixed" },
   { ...gfx(21.88, 26.16, 0, (d) => <StressHit dur={d} kind="trade-in" lines={["Motor lama / rosak", "Masih bawah RM7K"]} />), place: "fixed" },
   { ...gfx(39.74, 42.28, 0, (d) => <StressHit dur={d} kind="jackpot" lines={["Y15ZR", "RM6,500"]} />), place: "fixed" },
 ];
