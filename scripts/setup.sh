@@ -43,3 +43,11 @@ fi
 fetch v10 1DF9NGsgOQ0PCbDgr4F5_KeWGSNeGW28S 85 10 40   # Offer bos RM1,650 (graded)
 fetch v11 1uAzZr1pIPasM6_qjR2WGif_WK3YeKfRX 85 10 40   # Tas Tech anti-scam (no 19MTR outro)
 fetch v12 1-r7vA3dDmMjU0f7Z7HnUGt9-pas_v_Sa 85 10 40   # Tas Tech tolak phone
+# v13 arrives as rotated HEVC: transcode upright first
+if [ ! -f public/v13/source.mp4 ]; then
+  mkdir -p public/v13
+  curl -sSL -o public/v13/raw.mp4 "https://drive.usercontent.google.com/download?id=1QmpiM8CpBzmweCxZnSx-7tK9_nVk9Y0Q&export=download&confirm=t"
+  ffmpeg -v error -y -i public/v13/raw.mp4 -c:v libx264 -preset fast -crf 17 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart public/v13/source.mp4
+  rm public/v13/raw.mp4
+fi
+fetch v13 1QmpiM8CpBzmweCxZnSx-7tK9_nVk9Y0Q 85 10 40   # 19MTR stok ~100 biji (voice-over)
