@@ -23,8 +23,8 @@ const GRAPHICS: Gfx[] = [
   fixed({ from: 0, dur: HOOK_END, height: 0, render: (d) => (
     <QuoteLabel dur={d} lines={["19 Motor Trading", "±100 biji motor dalam stok"]} highlight={1} top={TOP} left={90} />
   ) }),
-  fixed(gfx(6.9, 12.0, 0, (d) => <QuoteLabel dur={d} lines={["Depan kedai:", "Sport Rider · NVX · EX5 · MT-15"]} top={TOP} left={90} />)),
-  fixed(gfx(19.8, 27.4, 0, (d) => <QuoteLabel dur={d} lines={["Atas: banyak EX5", "Wave S · MR3 · Wave 125"]} top={TOP} left={90} />)),
+  fixed(gfx(6.9, 12.0, 0, (d) => <QuoteLabel dur={d} lines={["Depan kedai:", "Sport Rider · NVX · Y15 · EX5 · MT-15"]} top={TOP} left={90} />)),
+  fixed(gfx(19.8, 27.4, 0, (d) => <QuoteLabel dur={d} lines={["Atas: banyak EX5", "Wave S · MR3 · Wave 125 · Y15"]} top={TOP} left={90} />)),
   fixed(gfx(42.6, 45.2, 0, (d) => <QuoteLabel dur={d} lines={["Total stok ±100 biji"]} highlight={0} top={TOP} left={90} />)),
   fixed(gfx(56.7, 62.4, 0, (d) => <QuoteLabel dur={d} lines={["LC banyak", "Lagenda 3 biji"]} top={TOP} left={90} />)),
   fixed(gfx(67.9, 74.9, 0, (d) => <QuoteLabel dur={d} lines={["NMAX · PCX · LC · EX5"]} top={TOP} left={90} />)),
