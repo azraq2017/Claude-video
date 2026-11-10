@@ -6,7 +6,7 @@ import words from "./words.json";
 import faces from "./faces.json";
 
 /**
- * Video 13 — 19 Motor Trading stock walkthrough (voice-over, no face; source was
+ * Video 13 — 19 Motor Trading stock walkthrough (WITH clean subtitles — user request) (voice-over, no face; source was
  * rotated HEVC → transcoded upright). MINIMAL STYLE, no subtitles, 19MTR outro.
  * No prices, trade-in or promo are spoken → no price pops, no stress hits, no SFX.
  * Only calm quote labels naming what's on screen (models Whisper heard clearly).
@@ -15,7 +15,7 @@ const base = createBase({ clips: edl, faces: faces as number[][], words, keyword
 const { gfx, tl } = base;
 
 const HOOK_END = tl.placed[0].from + tl.placed[0].frames;
-const TOP = 1080; // body-height band; nothing to dodge in a voice-over walkthrough
+const TOP = 960; // above the subtitle band (user asked for subtitles on this video)
 const fixed = (g: Gfx): Gfx => ({ ...g, place: "fixed" });
 
 const GRAPHICS: Gfx[] = [
@@ -41,7 +41,9 @@ export const stok100: Project = {
   graphics: GRAPHICS,
   sfx: [],
   flashCuts: [],
-  captionMode: "none",
+  // user explicitly asked for subtitles on this video → clean minimal subtitles
+  captionMode: "auto",
+  captionStyle: "clean",
   plain: true,
   musicLevels: { underVoice: 0.07, open: 0.2 },
   outro: true,

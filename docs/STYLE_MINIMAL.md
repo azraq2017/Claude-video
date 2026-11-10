@@ -54,6 +54,12 @@ Learned from two reference videos. Use this preset for future edits unless the u
 - Colours: navy `#1F334C`, red `#E22943`, white. Logo is traced to vectors in `src/brand/logo-paths.ts`
   from `public/brand/19mtr_logo.png`. Standalone preview: composition `Outro19`.
 
+## When the user asks for subtitles
+Use the clean style, never the old karaoke boxes: `captionMode: "auto", captionStyle: "clean"`
+(white Montserrat 800, black outline, spoken word turns yellow, fades between pages; sits at y≈1320).
+Move quote labels up (`top ≈ 960`) so they never overlap the subtitle band. Fix brand/model spellings in
+`fixes.json` first (Solariz, Avantiz, MT-15, "bio", …).
+
 ## Dark footage
 If the user says footage looks dark, grade the SOURCE with ffmpeg before editing (keeps Remotion fast):
 `curves=all='0/0 0.18/0.27 0.45/0.53 0.8/0.84 1/1',eq=saturation=1.1:contrast=1.03,unsharp=5:5:0.4`

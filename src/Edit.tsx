@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { AbsoluteFill, Audio, interpolate, OffthreadVideo, Sequence, staticFile, useCurrentFrame } from "remotion";
 import { FPS } from "./timeline";
-import { Captions } from "./components/Captions";
+import { Captions, CleanCaptions } from "./components/Captions";
 import { Placed } from "./components/Graphics";
 import { createLayoutEngine, Layout } from "./layout";
 import { projectFrames, type Project } from "./project";
@@ -150,7 +150,12 @@ export const Edit: React.FC<{ project: Project }> = ({ project: p }) => {
         </Sequence>
       ))}
 
-      {p.captionMode !== "none" && <Captions pages={p.captions} hiddenRanges={captionHidden} />}
+      {p.captionMode !== "none" &&
+        (p.captionStyle === "clean" ? (
+          <CleanCaptions pages={p.captions} hiddenRanges={captionHidden} />
+        ) : (
+          <Captions pages={p.captions} hiddenRanges={captionHidden} />
+        ))}
 
       {p.flashCuts.map((f, i) => (
         <Sequence key={`fl${i}`} from={f} durationInFrames={6}>

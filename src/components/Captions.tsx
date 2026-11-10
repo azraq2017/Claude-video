@@ -67,3 +67,54 @@ export const Captions: React.FC<{ pages: CapPage[]; hiddenRanges: [number, numbe
     </AbsoluteFill>
   );
 };
+
+/**
+ * "Clean" subtitles for the minimal style (only when the user asks for subtitles):
+ * white bold sentence-case text, black outline + soft shadow, the spoken word turns
+ * yellow. No boxes, no bounce — fades between pages.
+ */
+export const CleanCaptions: React.FC<{ pages: CapPage[]; hiddenRanges: [number, number][] }> = ({ pages, hiddenRanges }) => {
+  const frame = useCurrentFrame();
+  if (hiddenRanges.some(([a, b]) => frame >= a && frame < b)) return null;
+  const page = pages.find((p) => frame >= p.from && frame < p.to);
+  if (!page) return null;
+  const o = interpolate(frame, [page.from, page.from + 3], [0, 1], { extrapolateRight: "clamp" });
+  return (
+    <AbsoluteFill>
+      <div
+        style={{
+          position: "absolute",
+          left: SAFE.left,
+          width: SAFE_W,
+          top: CAPTION_Y + 20,
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "4px 14px",
+          opacity: o,
+        }}
+      >
+        {page.words.map((w, i) => {
+          const active = frame >= w.from && frame < w.to;
+          return (
+            <span
+              key={i}
+              style={{
+                fontFamily: MONT,
+                fontWeight: 800,
+                fontSize: 62,
+                lineHeight: 1.1,
+                color: active ? C.yellow : C.white,
+                WebkitTextStroke: "7px #000",
+                paintOrder: "stroke fill",
+                textShadow: "0 4px 14px rgba(0,0,0,0.5)",
+              }}
+            >
+              {w.text}
+            </span>
+          );
+        })}
+      </div>
+    </AbsoluteFill>
+  );
+};

@@ -33,6 +33,8 @@ export type Project = {
   musicLevels?: { underVoice: number; open: number };
   /** "exclusive": captions are hidden whenever any motion graphic is on screen (less crowded). */
   captionMode?: "auto" | "exclusive" | "none";
+  /** "karaoke" = old busy boxes; "clean" = minimal-style subtitles (white + yellow active word). */
+  captionStyle?: "karaoke" | "clean";
   /** "Captions only" look: no vignette, no slow push-in, no flash cuts. */
   plain?: boolean;
   /** Output frames that get a quick punch-in zoom (minimal style stress hits). */
