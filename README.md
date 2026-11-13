@@ -8,6 +8,7 @@ Vertical 1080×1920 edits for TikTok / IG Reels. One shared engine, one folder p
 | `RepairPhone` | Repair phone — tukar LCD, siap hari sama | 55s |
 | `Showroom` | 19 Motor Trading — Y15ZR, LC135, skuter | 86s |
 | `StokBaru` | Stok baru sampai — E-Bonus, Lagenda 2022, LC (min 1:31) | 94s |
+| `Lc2999` | 19 Motor Trading — LC135 RM2,999 (biasa RM3,500), minimal + outro | 32s |
 | `Stok100` | 19 Motor Trading — walkthrough stok ±100 biji (voice-over), minimal + outro | 87s |
 | `TolakPhone` | Tas Tech — tolak phone lama (Android/iPhone), minimal + Tas Tech outro | 110s |
 | `AntiScam` | Tas Tech — phone jackpot RM399 + cara elak scam (minimal, no outro) | 117s |
@@ -46,6 +47,6 @@ SFX in `public/sfx` are original, synthesised by `scripts/make_sfx.py`.
 ## Music credits (put in the post caption)
 - Video 1: "Funky Chunk" Kevin MacLeod (incompetech.com)
 - Video 2: "Getting it Done" Kevin MacLeod (incompetech.com)
-- Video 3–13: "Funky Chunk" Kevin MacLeod (incompetech.com)
+- Video 3–14: "Funky Chunk" Kevin MacLeod (incompetech.com)
 
 Licensed under Creative Commons: By Attribution 4.0 License — http://creativecommons.org/licenses/by/4.0/

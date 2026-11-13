@@ -51,3 +51,11 @@ if [ ! -f public/v13/source.mp4 ]; then
   rm public/v13/raw.mp4
 fi
 fetch v13 1QmpiM8CpBzmweCxZnSx-7tK9_nVk9Y0Q 85 10 40   # 19MTR stok ~100 biji (voice-over)
+# v14 arrives as rotated HEVC: transcode upright first
+if [ ! -f public/v14/source.mp4 ]; then
+  mkdir -p public/v14
+  curl -sSL -o public/v14/raw.mp4 "https://drive.usercontent.google.com/download?id=15Le4OydJwOvXdIrDgSHfEtx-dLPw2shq&export=download&confirm=t"
+  ffmpeg -v error -y -i public/v14/raw.mp4 -c:v libx264 -preset fast -crf 17 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart public/v14/source.mp4
+  rm public/v14/raw.mp4
+fi
+fetch v14 15Le4OydJwOvXdIrDgSHfEtx-dLPw2shq 85 10 40   # 19MTR LC135 RM2,999

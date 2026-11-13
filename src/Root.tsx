@@ -16,10 +16,11 @@ import { offerBos } from "./projects/offer-bos";
 import { antiScam } from "./projects/anti-scam";
 import { tolakPhone } from "./projects/tolak-phone";
 import { stok100 } from "./projects/stok-100";
+import { lc2999 } from "./projects/lc-2999";
 import { OutroPreview, OUTRO_FRAMES } from "./brand/Outro19";
 import { OutroTasTechPreview, TT_OUTRO_FRAMES } from "./brand/OutroTasTech";
 
-const PROJECTS: Project[] = [tolakMotor, repairPhone, showroom, stokBaru, ex5Mahal, phoneLama, repairTv, stokWalkthrough, minimalDemo, promoDeepavali, offerBos, antiScam, tolakPhone, stok100];
+const PROJECTS: Project[] = [tolakMotor, repairPhone, showroom, stokBaru, ex5Mahal, phoneLama, repairTv, stokWalkthrough, minimalDemo, promoDeepavali, offerBos, antiScam, tolakPhone, stok100, lc2999];
 
 // Projects hold functions/typed arrays, so pass them by closure instead of
 // (JSON-serialised) defaultProps.
