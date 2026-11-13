@@ -31,7 +31,9 @@
     "preview:v13": "remotion render Stok100 out/stok100_preview_720p.mp4 --scale=0.6666666666666666 --crf=24 --timeout=120000",
     "render:v13": "remotion render Stok100 out/stok100_final.mp4 --crf=18 --timeout=120000 && ffmpeg -y -v error -i out/stok100_final.mp4 -c:v copy -af alimiter=limit=0.84:attack=2:release=50:level=false -c:a aac -b:a 256k -ar 48000 -movflags +faststart out/stok100_FINAL_1080p.mp4",
     "preview:v14": "remotion render Lc2999 out/lc2999_preview_720p.mp4 --scale=0.6666666666666666 --crf=24 --timeout=120000",
-    "render:v14": "remotion render Lc2999 out/lc2999_final.mp4 --crf=18 --timeout=120000 && ffmpeg -y -v error -i out/lc2999_final.mp4 -c:v copy -af alimiter=limit=0.84:attack=2:release=50:level=false -c:a aac -b:a 256k -ar 48000 -movflags +faststart out/lc2999_FINAL_1080p.mp4"
+    "render:v14": "remotion render Lc2999 out/lc2999_final.mp4 --crf=18 --timeout=120000 && ffmpeg -y -v error -i out/lc2999_final.mp4 -c:v copy -af alimiter=limit=0.84:attack=2:release=50:level=false -c:a aac -b:a 256k -ar 48000 -movflags +faststart out/lc2999_FINAL_1080p.mp4",
+    "preview:v16": "remotion render Lagenda1950 out/lagenda1950_preview_720p.mp4 --scale=0.6666666666666666 --crf=24 --timeout=120000",
+    "render:v16": "remotion render Lagenda1950 out/lagenda1950_final.mp4 --crf=18 --timeout=120000 && ffmpeg -y -v error -i out/lagenda1950_final.mp4 -c:v copy -af alimiter=limit=0.84:attack=2:release=50:level=false -c:a aac -b:a 256k -ar 48000 -movflags +faststart out/lagenda1950_FINAL_1080p.mp4"
   },
   "dependencies": {
     "@fontsource/anton": "^5.3.0",
