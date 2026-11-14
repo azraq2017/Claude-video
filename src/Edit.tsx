@@ -78,8 +78,16 @@ const makeMusicVolume = (p: Project) => {
     }
     duck[f] = s / n;
   }
+  // music boosts (e.g. silent b-roll the user wants louder), 12-frame ramps
+  const boost = new Float32Array(T);
+  for (const b of p.musicBoost ?? []) {
+    for (let f = Math.max(0, b.from - 12); f < Math.min(T, b.to + 12); f++) {
+      const r = interpolate(f, [b.from - 12, b.from, b.to, b.to + 12], [0, 1, 1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+      boost[f] = Math.max(boost[f], r * b.level);
+    }
+  }
   return (f: number) => {
-    const base = open + (underVoice - open) * (duck[f] ?? 1);
+    const base = Math.max(open + (underVoice - open) * (duck[f] ?? 1), boost[f] ?? 0);
     const fadeIn = interpolate(f, [0, 6], [0.4, 1], { extrapolateRight: "clamp" });
     const fadeOut = interpolate(f, [T - 45, T], [1, 0], { extrapolateLeft: "clamp" });
     return base * fadeIn * fadeOut;
@@ -138,7 +146,7 @@ export const Edit: React.FC<{ project: Project }> = ({ project: p }) => {
       {p.tl.placed.map((c) => (
         <Sequence key={`v${c.index}`} from={c.from} durationInFrames={c.frames} name={`clip ${c.index}`}>
           <ClipVideo p={p} srcStart={c.srcStart} frames={c.frames} zoom={c.zoom} from={c.from} />
-          <VoiceClip src={p.media.voice} srcStart={c.srcStart} frames={c.frames} muteAfter={c.muteAfter} />
+          {!c.mute && <VoiceClip src={p.media.voice} srcStart={c.srcStart} frames={c.frames} muteAfter={c.muteAfter} />}
         </Sequence>
       ))}
 

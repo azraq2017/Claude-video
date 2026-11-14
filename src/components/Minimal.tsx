@@ -54,7 +54,9 @@ export const QuoteLabel: React.FC<{
   left?: number;
   top?: number;
   fontSize?: number;
-}> = ({ lines, dur, highlight, left: leftIn = 250, top = 1090, fontSize: fsIn }) => {
+  /** show the teal quote badge (default true) */
+  badge?: boolean;
+}> = ({ lines, dur, highlight, left: leftIn = 250, top = 1090, fontSize: fsIn, badge = true }) => {
   const frame = useCurrentFrame();
   // auto-fit inside the safe zone (right edge x=930): shrink, and if still long, start further left
   const maxChars = Math.max(...lines.map((l) => [...l].length));
@@ -85,9 +87,11 @@ export const QuoteLabel: React.FC<{
           transform: `translateX(${interpolate(inn, [0, 1], [-24, 0])}px)`,
         }}
       >
-        <div style={{ marginBottom: 8 }}>
-          <QuoteBadge size={fontSize * 1.1} />
-        </div>
+        {badge && (
+          <div style={{ marginBottom: 8 }}>
+            <QuoteBadge size={fontSize * 1.1} />
+          </div>
+        )}
         {lines.map((l, i) => {
           const d = spring({ frame: frame - 3 - i * 3, fps, config: { damping: 200 } });
           return (

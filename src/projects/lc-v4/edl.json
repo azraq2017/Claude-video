@@ -1,6 +1,28 @@
 [
- {"start": 0.0, "end": 14.4, "note": "LC V4 harga jackpot, 2 biji; hitam RM3,999"},
- {"start": 22.75, "end": 29.3, "note": "biru RM4,500"},
- {"start": 34.9, "end": 42.0, "note": "siapa berkenan, biru & hitam, roger kita"},
- {"start": 43.62, "end": 48.3, "note": "call / WhatsApp admin, siapa cepat dia dapat"}
+ {
+  "start": 0.0,
+  "end": 14.4,
+  "note": "LC V4 harga jackpot, 2 biji; hitam RM3,999"
+ },
+ {
+  "start": 14.4,
+  "end": 22.75,
+  "mute": true,
+  "note": "silent b-roll between the bikes \u2014 music up (user)"
+ },
+ {
+  "start": 22.75,
+  "end": 29.3,
+  "note": "biru RM4,500"
+ },
+ {
+  "start": 34.9,
+  "end": 42.0,
+  "note": "siapa berkenan, biru & hitam, roger kita"
+ },
+ {
+  "start": 43.62,
+  "end": 48.3,
+  "note": "call / WhatsApp admin, siapa cepat dia dapat"
+ }
 ]

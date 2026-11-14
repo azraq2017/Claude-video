@@ -14,6 +14,7 @@ export const buildCaptions = (tl: Timeline, words: Word[], keywords: string[], s
   const SKIP = new Set(skip);
   const pages: CapPage[] = [];
   for (const clip of tl.placed) {
+    if (clip.mute) continue;
     const inClip = words.filter((w) => {
       const mid = (w.s + w.e) / 2;
       return mid >= clip.srcStart && mid <= clip.srcEnd;

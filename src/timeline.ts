@@ -1,6 +1,6 @@
 export const FPS = 30;
 
-export type Clip = { start: number; end: number; zoom?: number; note?: string; muteAfter?: number };
+export type Clip = { start: number; end: number; zoom?: number; note?: string; muteAfter?: number; mute?: boolean };
 
 export type PlacedClip = {
   srcStart: number; // seconds in source
@@ -10,6 +10,7 @@ export type PlacedClip = {
   zoom: number; // punch-in for jump-cut variety
   index: number;
   muteAfter?: number; // source second after which the voice is silenced (video keeps running)
+  mute?: boolean; // b-roll: keep the picture, drop the voice (and its captions)
 };
 
 export type Timeline = ReturnType<typeof createTimeline>;
@@ -19,7 +20,7 @@ export const createTimeline = (clips: Clip[]) => {
   let cursor = 0;
   const placed: PlacedClip[] = clips.map((c, index) => {
     const frames = Math.round((c.end - c.start) * FPS);
-    const p = { srcStart: c.start, srcEnd: c.end, from: cursor, frames, zoom: c.zoom ?? 1, index, muteAfter: c.muteAfter };
+    const p = { srcStart: c.start, srcEnd: c.end, from: cursor, frames, zoom: c.zoom ?? 1, index, muteAfter: c.muteAfter, mute: c.mute };
     cursor += frames;
     return p;
   });

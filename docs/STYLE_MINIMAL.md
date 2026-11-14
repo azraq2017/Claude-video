@@ -60,6 +60,11 @@ Use the clean style, never the old karaoke boxes: `captionMode: "auto", captionS
 Move quote labels up (`top ≈ 960`) so they never overlap the subtitle band. Fix brand/model spellings in
 `fixes.json` first (Solariz, Avantiz, MT-15, "bio", …).
 
+## Silent b-roll the user wants kept
+Add the clip with `"mute": true` in edl.json (picture stays, voice + its captions are dropped) and
+bring the music up over it with `musicBoost: [{ from, to, level }]` (level ≈ 0.8 ≈ speech loudness).
+`QuoteLabel badge={false}` hides the quote badge (user asked for that on a closing label).
+
 ## Dark footage
 If the user says footage looks dark, grade the SOURCE with ffmpeg before editing (keeps Remotion fast):
 `curves=all='0/0 0.18/0.27 0.45/0.53 0.8/0.84 1/1',eq=saturation=1.1:contrast=1.03,unsharp=5:5:0.4`

@@ -31,6 +31,8 @@ export type Project = {
   sfx: Sfx[];
   flashCuts: number[];
   musicLevels?: { underVoice: number; open: number };
+  /** Output-frame ranges where the music comes up to `level` (silent b-roll). */
+  musicBoost?: { from: number; to: number; level: number }[];
   /** "exclusive": captions are hidden whenever any motion graphic is on screen (less crowded). */
   captionMode?: "auto" | "exclusive" | "none";
   /** "karaoke" = old busy boxes; "clean" = minimal-style subtitles (white + yellow active word). */
