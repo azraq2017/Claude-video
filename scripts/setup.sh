@@ -75,3 +75,11 @@ if [ ! -f public/v17/source.mp4 ]; then
   rm public/v17/raw.mp4
 fi
 fetch v17 1pv1OIg9I1TvKI84Ka5gjtZ2WNXrMuAmB 85 10 40   # 19MTR LC V4 x2
+# v18 arrives as rotated HEVC: transcode upright first
+if [ ! -f public/v18/source.mp4 ]; then
+  mkdir -p public/v18
+  curl -sSL -o public/v18/raw.mp4 "https://drive.usercontent.google.com/download?id=14tmpPJuK_7aWaIkTl4hvw1BBpuEl3yqg&export=download&confirm=t"
+  ffmpeg -v error -y -i public/v18/raw.mp4 -c:v libx264 -preset fast -crf 17 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart public/v18/source.mp4
+  rm public/v18/raw.mp4
+fi
+fetch v18 14tmpPJuK_7aWaIkTl4hvw1BBpuEl3yqg 85 10 40   # 19MTR Lagenda 115ZR biru RM2,999 (effects + subtitles)
