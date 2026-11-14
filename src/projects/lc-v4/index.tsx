@@ -47,7 +47,9 @@ export const lcV4: Project = {
   plain: true,
   punches: [F(1.75)],
   musicLevels: { underVoice: 0.07, open: 0.2 },
-  // silent shot between the black and blue bike: music up (user request)
-  musicBoost: [{ from: tl.placed[1].from, to: tl.placed[1].from + tl.placed[1].frames, level: 0.8 }],
+  // silent shots (between the bikes, and after the blue bike price): music up (user request)
+  musicBoost: tl.placed
+    .filter((c) => c.mute)
+    .map((c) => ({ from: c.from, to: c.from + c.frames, level: 0.8 })),
   outro: true,
 };
