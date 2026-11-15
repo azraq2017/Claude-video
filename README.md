@@ -8,6 +8,7 @@ Vertical 1080×1920 edits for TikTok / IG Reels. One shared engine, one folder p
 | `RepairPhone` | Repair phone — tukar LCD, siap hari sama | 55s |
 | `Showroom` | 19 Motor Trading — Y15ZR, LC135, skuter | 86s |
 | `StokBaru` | Stok baru sampai — E-Bonus, Lagenda 2022, LC (min 1:31) | 94s |
+| `Ex5Restore` | 19 Motor Trading — EX5 / Dream full restore stok, subtitles + outro | 96s |
 | `LagendaBiru` | 19 Motor Trading — Lagenda 115ZR biru RM2,999, special effects + subtitles + outro | 40s |
 | `LcV4` | 19 Motor Trading — LC V4 hitam RM3,999 / biru RM4,500, minimal + outro | 36s |
 | `Lagenda1950` | 19 Motor Trading — Lagenda 115ZR RM1,950 (biasa RM2,500–2,999), minimal + outro | 41s |
@@ -50,6 +51,6 @@ SFX in `public/sfx` are original, synthesised by `scripts/make_sfx.py`.
 ## Music credits (put in the post caption)
 - Video 1: "Funky Chunk" Kevin MacLeod (incompetech.com)
 - Video 2: "Getting it Done" Kevin MacLeod (incompetech.com)
-- Video 3–18: "Funky Chunk" Kevin MacLeod (incompetech.com)
+- Video 3–19: "Funky Chunk" Kevin MacLeod (incompetech.com)
 
 Licensed under Creative Commons: By Attribution 4.0 License — http://creativecommons.org/licenses/by/4.0/
