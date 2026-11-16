@@ -99,3 +99,11 @@ if [ ! -f public/v20/source.mp4 ]; then
   rm public/v20/raw.mp4
 fi
 fetch v20 1OKFlm-qWv-fv0ViFFulwUW29L1LQOWJ1 85 10 40   # 19MTR Yamaha Sport CDI
+# v21 arrives as rotated HEVC: transcode upright first
+if [ ! -f public/v21/source.mp4 ]; then
+  mkdir -p public/v21
+  curl -sSL -o public/v21/raw.mp4 "https://drive.usercontent.google.com/download?id=1HPmYbYp9ln0SKZOj7KC-VPjHyGrhoxaU&export=download&confirm=t"
+  ffmpeg -v error -y -i public/v21/raw.mp4 -c:v libx264 -preset fast -crf 17 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart public/v21/source.mp4
+  rm public/v21/raw.mp4
+fi
+fetch v21 1HPmYbYp9ln0SKZOj7KC-VPjHyGrhoxaU 85 10 40   # 19MTR Yamaha XMAX V1
