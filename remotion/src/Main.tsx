@@ -18,7 +18,7 @@ import {BodyRow, ConditionRow, CtaRow, EndCard, Flash, HookTitle, PurpleWash, Sa
 export const W = 1080;
 export const H = 1920;
 
-const SRC = staticFile('src.mp4');
+const SRC = staticFile('src_clean.mp4');
 const VOICE = staticFile('voice.wav');
 const sfx = (n: string) => staticFile(`sfx/${n}.wav`);
 
