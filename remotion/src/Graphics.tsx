@@ -331,8 +331,11 @@ export const EndCard: React.FC<{title?: string; price?: string; was?: string; ct
         </div>
         {was ? (
           <div style={{transform: `scale(${a})`, position: 'relative', fontFamily: 'InterDisplay', fontWeight: 800, fontSize: 64, color: 'rgba(255,255,255,0.75)'}}>
-            Harga asal {was}
-            <div style={{position: 'absolute', left: 250, right: -6, top: '52%', height: 8, background: '#ff3b5c', borderRadius: 4, transform: 'rotate(-4deg)'}} />
+            Harga asal{' '}
+            <span style={{position: 'relative', display: 'inline-block'}}>
+              {was}
+              <span style={{position: 'absolute', left: -6, right: -6, top: '50%', height: 8, background: '#ff3b5c', borderRadius: 4, transform: 'rotate(-6deg)'}} />
+            </span>
           </div>
         ) : null}
         <div
@@ -340,7 +343,7 @@ export const EndCard: React.FC<{title?: string; price?: string; was?: string; ct
             transform: `scale(${b}) rotate(-3deg)`,
             fontFamily: 'InterDisplay',
             fontWeight: 900,
-            fontSize: 230,
+            fontSize: price.length > 5 ? 190 : 230,
             lineHeight: 1,
             color: YELLOW,
             WebkitTextStroke: `14px ${INK}`,
