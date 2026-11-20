@@ -23,7 +23,8 @@ const VOICE = staticFile('voice.wav');
 const sfx = (n: string) => staticFile(`sfx/${n}.wav`);
 
 // ---------- video layer ----------
-const Clip: React.FC<{start: number; dur: number; zoom?: number; focusY?: number; punch?: boolean}> = ({
+export const Clip: React.FC<{start: number; dur: number; zoom?: number; focusY?: number; punch?: boolean; src?: string}> = ({
+  src = SRC,
   start,
   dur,
   zoom = 1,
@@ -37,7 +38,7 @@ const Clip: React.FC<{start: number; dur: number; zoom?: number; focusY?: number
   return (
     <AbsoluteFill style={{overflow: 'hidden', backgroundColor: 'black'}}>
       <OffthreadVideo
-        src={SRC}
+        src={src}
         muted
         trimBefore={Math.round(start * FPS)}
         style={{
@@ -53,7 +54,7 @@ const Clip: React.FC<{start: number; dur: number; zoom?: number; focusY?: number
 };
 
 // Hook layout: blurred backdrop + framed card so the headline never sits on the phone
-const HookVideo: React.FC<{start: number; dur: number}> = ({start, dur}) => {
+export const HookVideo: React.FC<{start: number; dur: number; src?: string; glow?: string; cardTop?: number}> = ({start, dur, src = SRC, glow = 'rgba(170,120,255,0.35)', cardTop = 560}) => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const s = spring({frame: f, fps, config: {damping: 14, stiffness: 120}});
@@ -62,30 +63,30 @@ const HookVideo: React.FC<{start: number; dur: number}> = ({start, dur}) => {
   return (
     <AbsoluteFill style={{backgroundColor: '#0d0716'}}>
       <OffthreadVideo
-        src={SRC}
+        src={src}
         muted
         trimBefore={Math.round(start * FPS)}
         style={{width: '100%', height: '100%', objectFit: 'cover', filter: 'blur(38px) brightness(0.45) saturate(1.4)', transform: 'scale(1.2)'}}
       />
       <AbsoluteFill
         style={{
-          background: 'radial-gradient(ellipse at 50% 30%, rgba(170,120,255,0.35), rgba(0,0,0,0) 60%)',
+          background: `radial-gradient(ellipse at 50% 30%, ${glow}, rgba(0,0,0,0) 60%)`,
         }}
       />
       <div
         style={{
           position: 'absolute',
           left: W / 2 - (W * scale) / 2,
-          top: 560,
+          top: cardTop,
           width: W * scale,
           height: H * scale,
           borderRadius: 48,
           overflow: 'hidden',
-          boxShadow: '0 30px 90px rgba(0,0,0,0.6), 0 0 0 4px rgba(200,170,255,0.55)',
+          boxShadow: `0 30px 90px rgba(0,0,0,0.6), 0 0 0 4px ${glow}`,
         }}
       >
         <OffthreadVideo
-          src={SRC}
+          src={src}
           muted
           trimBefore={Math.round(start * FPS)}
           style={{width: '100%', height: '100%', objectFit: 'cover', transform: `scale(${drift})`}}
@@ -96,7 +97,7 @@ const HookVideo: React.FC<{start: number; dur: number}> = ({start, dur}) => {
 };
 
 // ---------- audio helpers ----------
-const edgeFade = (dur: number, n = 2) => (f: number) =>
+export const edgeFade = (dur: number, n = 2) => (f: number) =>
   interpolate(f, [0, n, dur - n, dur], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
 
 type Hit = {f: number; n: string; v?: number};

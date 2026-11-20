@@ -1,10 +1,10 @@
 import React from 'react';
 import {AbsoluteFill, Easing, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 
-const PURPLE = '#B794FF';
-const YELLOW = '#FFE14D';
-const GREEN = '#3EE07F';
-const INK = '#0b0612';
+export const PURPLE = '#B794FF';
+export const YELLOW = '#FFE14D';
+export const GREEN = '#3EE07F';
+export const INK = '#0b0612';
 
 // Safe zone used for every overlay (1080x1920):
 // top 220 (TikTok tabs / IG header), bottom 420 (caption, username, music),
@@ -18,24 +18,24 @@ const useSpring = (from: number, cfg = {damping: 12, stiffness: 180, mass: 0.7})
 };
 
 // ---------- icons ----------
-const Check: React.FC<{c: string}> = ({c}) => (
+export const Check: React.FC<{c: string}> = ({c}) => (
   <svg width="44" height="44" viewBox="0 0 44 44">
     <circle cx="22" cy="22" r="20" fill={c} />
     <path d="M12 23 l7 7 l13 -15" stroke={INK} strokeWidth="5.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
-const Spark: React.FC<{c: string}> = ({c}) => (
+export const Spark: React.FC<{c: string}> = ({c}) => (
   <svg width="44" height="44" viewBox="0 0 44 44">
     <path d="M22 2 C24 16 28 20 42 22 C28 24 24 28 22 42 C20 28 16 24 2 22 C16 20 20 16 22 2Z" fill={c} />
   </svg>
 );
-const Phone: React.FC<{c: string}> = ({c}) => (
+export const Phone: React.FC<{c: string}> = ({c}) => (
   <svg width="40" height="44" viewBox="0 0 40 44">
     <rect x="8" y="2" width="24" height="40" rx="6" fill="none" stroke={c} strokeWidth="4.5" />
     <rect x="15" y="6" width="10" height="3" rx="1.5" fill={c} />
   </svg>
 );
-const Chip: React.FC<{c: string}> = ({c}) => (
+export const Chip: React.FC<{c: string}> = ({c}) => (
   <svg width="44" height="44" viewBox="0 0 44 44">
     <rect x="9" y="9" width="26" height="26" rx="5" fill={c} />
     {[14, 22, 30].map((p) => (
@@ -48,12 +48,12 @@ const Chip: React.FC<{c: string}> = ({c}) => (
     ))}
   </svg>
 );
-const Star: React.FC<{c: string; s?: number}> = ({c, s = 46}) => (
+export const Star: React.FC<{c: string; s?: number}> = ({c, s = 46}) => (
   <svg width={s} height={s} viewBox="0 0 24 24">
     <path d="M12 1.8l3.1 6.6 7.2.9-5.3 5 1.4 7.1L12 17.9 5.6 21.4 7 14.3 1.7 9.3l7.2-.9z" fill={c} stroke={INK} strokeWidth="1.2" />
   </svg>
 );
-const Chat: React.FC<{c: string; fg?: string}> = ({c, fg = '#fff'}) => (
+export const Chat: React.FC<{c: string; fg?: string}> = ({c, fg = '#fff'}) => (
   <svg width="54" height="54" viewBox="0 0 54 54">
     <path d="M27 5C14.8 5 5 14 5 25.3c0 4.3 1.5 8.3 4 11.6L6.5 48l11.6-4c2.7 1.1 5.7 1.7 8.9 1.7 12.2 0 22-9 22-20.3S39.2 5 27 5z" fill={c} />
     <circle cx="17" cy="25.5" r="3.2" fill={fg} />
@@ -61,7 +61,7 @@ const Chat: React.FC<{c: string; fg?: string}> = ({c, fg = '#fff'}) => (
     <circle cx="37" cy="25.5" r="3.2" fill={fg} />
   </svg>
 );
-const Send: React.FC<{c: string}> = ({c}) => (
+export const Send: React.FC<{c: string}> = ({c}) => (
   <svg width="46" height="46" viewBox="0 0 24 24">
     <path d="M2.5 11.2 21 3l-6.8 18.5-3.4-7.3z" fill={c} />
     <path d="M10.8 14.2 21 3" stroke={INK} strokeWidth="1.6" />
@@ -130,14 +130,14 @@ export const TopRow: React.FC<{children: React.ReactNode; column?: boolean}> = (
 );
 
 // ---------- segment groups ----------
-export const SpecRow: React.FC<{a: number; b: number; c: number}> = ({a, b, c}) => (
+export const SpecRow: React.FC<{a: number; b: number; c: number; model?: string; colour?: string; swatch?: string}> = ({a, b, c, model = 'iPhone 12', colour = 'Purple', swatch = 'linear-gradient(135deg,#d9c6ff,#9c7be6)'}) => (
   <TopRow>
-    <Pill at={a} icon={<Phone c={PURPLE} />} label="iPhone 12" />
+    <Pill at={a} icon={<Phone c={PURPLE} />} label={model} />
     <Pill at={b} icon={<Chip c={YELLOW} />} label="128GB" accent={YELLOW} />
     <Pill
       at={c}
-      icon={<div style={{width: 38, height: 38, borderRadius: 999, background: 'linear-gradient(135deg,#d9c6ff,#9c7be6)', border: '3px solid #fff'}} />}
-      label="Purple"
+      icon={<div style={{width: 38, height: 38, borderRadius: 999, background: swatch, border: '3px solid #fff'}} />}
+      label={colour}
     />
   </TopRow>
 );
@@ -171,12 +171,12 @@ export const ConditionRow: React.FC<{a: number; b: number; fill: number}> = ({a,
   );
 };
 
-export const BodyRow: React.FC<{a: number; b: number}> = ({a, b}) => {
+export const BodyRow: React.FC<{a: number; b: number; labelA?: string; labelB?: string}> = ({a, b, labelA = 'Body Cantik', labelB = 'Almost Perfect'}) => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   return (
     <TopRow>
-      <Pill at={a} icon={<Spark c={PURPLE} />} label="Body Cantik" />
+      <Pill at={a} icon={<Spark c={PURPLE} />} label={labelA} />
       <Pill
         at={b}
         accent={YELLOW}
@@ -190,7 +190,7 @@ export const BodyRow: React.FC<{a: number; b: number}> = ({a, b}) => {
                 </span>
               );
             })}
-            <span style={{marginLeft: 10}}>Almost Perfect</span>
+            <span style={{marginLeft: 10}}>{labelB}</span>
           </span>
         }
       />
@@ -315,7 +315,7 @@ export const HookTitle: React.FC<{priceAt: number}> = ({priceAt}) => {
 };
 
 // ---------- end card ----------
-export const EndCard: React.FC = () => {
+export const EndCard: React.FC<{title?: string; price?: string; was?: string; cta?: string}> = ({title = 'iPHONE 12 • 128GB', price = 'RM799', was, cta = 'WhatsApp / DM'}) => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const bg = interpolate(f, [0, 8], [0, 1], {extrapolateRight: 'clamp'});
@@ -327,8 +327,14 @@ export const EndCard: React.FC = () => {
       <AbsoluteFill style={{backdropFilter: `blur(${24 * bg}px)`, background: `rgba(13,7,22,${0.55 * bg})`}} />
       <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', paddingBottom: 260, gap: 24, display: 'flex', flexDirection: 'column'}}>
         <div style={{transform: `scale(${a})`, fontFamily: 'InterDisplay', fontWeight: 800, fontSize: 56, color: '#fff', letterSpacing: 1}}>
-          iPHONE 12 • 128GB
+          {title}
         </div>
+        {was ? (
+          <div style={{transform: `scale(${a})`, position: 'relative', fontFamily: 'InterDisplay', fontWeight: 800, fontSize: 64, color: 'rgba(255,255,255,0.75)'}}>
+            Harga asal {was}
+            <div style={{position: 'absolute', left: 250, right: -6, top: '52%', height: 8, background: '#ff3b5c', borderRadius: 4, transform: 'rotate(-4deg)'}} />
+          </div>
+        ) : null}
         <div
           style={{
             transform: `scale(${b}) rotate(-3deg)`,
@@ -343,11 +349,11 @@ export const EndCard: React.FC = () => {
             letterSpacing: -6,
           }}
         >
-          RM799
+          {price}
         </div>
         <div style={{transform: `scale(${c})`, display: 'flex', gap: 16}}>
           <div style={{display: 'flex', alignItems: 'center', gap: 12, background: GREEN, color: INK, padding: '14px 30px', borderRadius: 999, fontFamily: 'InterDisplay', fontWeight: 900, fontSize: 44}}>
-            <Chat c={INK} fg={GREEN} /> WhatsApp / DM
+            <Chat c={INK} fg={GREEN} /> {cta}
           </div>
         </div>
         <div style={{opacity: c, fontFamily: 'InterDisplay', fontWeight: 800, fontSize: 44, color: '#fff'}}>Siapa cepat, dia dapat!</div>

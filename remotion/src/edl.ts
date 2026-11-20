@@ -115,15 +115,16 @@ export const END_CARD = 1.7; // seconds, after last segment
 
 export type Placed = Seg & {from: number; dur: number}; // frames on output timeline
 
-export const placed: Placed[] = (() => {
+export const placeSegs = (segs: Seg[]): Placed[] => {
   let f = 0;
-  return SEGS.map((s) => {
+  return segs.map((s) => {
     const dur = Math.round((s.a[1] - s.a[0]) * FPS);
     const p = {...s, from: f, dur};
     f += dur;
     return p;
   });
-})();
+};
+export const placed: Placed[] = placeSegs(SEGS);
 
 export const BODY_FRAMES = placed[placed.length - 1].from + placed[placed.length - 1].dur;
 export const TOTAL_FRAMES = BODY_FRAMES + Math.round(END_CARD * FPS);

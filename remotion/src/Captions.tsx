@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
-import {FPS, placed, Word} from './edl';
+import {FPS, placed as defaultPlaced, Placed, Word} from './edl';
 
 // Word-by-word karaoke captions, max 3 words per chunk.
 // Sits at y≈1450: under the phone, above the TikTok/IG caption + username zone.
@@ -9,7 +9,7 @@ export const CAPTION_Y = 1450;
 type OutWord = Word & {fs: number; fe: number};
 type Chunk = {words: OutWord[]; fs: number; fe: number};
 
-const chunks: Chunk[] = (() => {
+const buildChunks = (placed: Placed[]): Chunk[] => {
   const out: Chunk[] = [];
   for (const p of placed) {
     const ws: OutWord[] = p.words.map((w) => ({
@@ -35,9 +35,10 @@ const chunks: Chunk[] = (() => {
     });
   }
   return out;
-})();
+};
 
-export const Captions: React.FC = () => {
+export const Captions: React.FC<{segs?: Placed[]}> = ({segs = defaultPlaced}) => {
+  const chunks = React.useMemo(() => buildChunks(segs), [segs]);
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const c = chunks.find((k) => f >= k.fs && f < k.fe);
