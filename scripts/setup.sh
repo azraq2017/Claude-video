@@ -107,3 +107,14 @@ if [ ! -f public/v21/source.mp4 ]; then
   rm public/v21/raw.mp4
 fi
 fetch v21 1HPmYbYp9ln0SKZOj7KC-VPjHyGrhoxaU 85 10 40   # 19MTR Yamaha XMAX V1
+# Event akhir tahun: 7 clips + separate voice-over (event1..7.MOV, "voice event.m4a")
+mkdir -p public/event
+i=1; for id in 1p-gdnK42DpGQdQD7CLts6R2iPVaWI_H- 1dgg-HC2FT_15TVrg5JVkfrBr5X30ahn1 1vGGZD0d999DD6Shk2gK3HOKcdeM15kiX 14QXNNEr6EDs21fHgk69sSD9tJvif9kHK 1FObzpRn_5krY7Ns_zgMJIrLIQhpHPgPU 1rsDuTAMJn5aVIXtAn9vO-ZntgOM8NmTp 1yAviNymk1EVz1SaWODd6l3bat_aHn-jI; do
+  [ -f public/event/f$i.mp4 ] || { curl -sSL -o public/event/raw.mov "https://drive.usercontent.google.com/download?id=$id&export=download&confirm=t"; ffmpeg -v error -y -i public/event/raw.mov -c:v copy -c:a aac -b:a 128k -movflags +faststart public/event/f$i.mp4; rm public/event/raw.mov; }
+  i=$((i+1))
+done
+if [ ! -f public/event/vo.m4a ]; then
+  curl -sSL -o public/event/raw.m4a "https://drive.usercontent.google.com/download?id=1dLPWWjehOnY1Ey5vwk5rbLUmWY0q-Tsy&export=download&confirm=t"
+  ffmpeg -v error -y -i public/event/raw.m4a -af "highpass=f=85,afftdn=nr=8:nf=-40,acompressor=threshold=-20dB:ratio=3:attack=8:release=120:makeup=2,equalizer=f=3000:t=q:w=1.2:g=2,loudnorm=I=-14:TP=-1.5:LRA=9" -ar 48000 -ac 2 -c:a aac -b:a 192k public/event/vo.m4a
+  rm public/event/raw.m4a
+fi

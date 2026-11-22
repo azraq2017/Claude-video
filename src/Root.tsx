@@ -23,6 +23,7 @@ import { lagendaBiru } from "./projects/lagenda-biru";
 import { ex5Restore } from "./projects/ex5-restore";
 import { yamahaSport } from "./projects/yamaha-sport";
 import { xmaxV1 } from "./projects/xmax-v1";
+import { EventPromo, EVENT_FRAMES } from "./projects/event-akhir-tahun/EventPromo";
 import { OutroPreview, OUTRO_FRAMES } from "./brand/Outro19";
 import { OutroTasTechPreview, TT_OUTRO_FRAMES } from "./brand/OutroTasTech";
 
@@ -37,6 +38,7 @@ const COMPONENTS = Object.fromEntries(
 export const RemotionRoot: React.FC = () => (
   <>
     <Composition id="Outro19" component={OutroPreview} durationInFrames={OUTRO_FRAMES} fps={FPS} width={1080} height={1920} />
+    <Composition id="EventAkhirTahun" component={EventPromo} durationInFrames={EVENT_FRAMES} fps={FPS} width={1080} height={1920} />
     <Composition id="OutroTasTech" component={OutroTasTechPreview} durationInFrames={TT_OUTRO_FRAMES} fps={FPS} width={1080} height={1920} />
     {PROJECTS.map((p) => (
       <Composition

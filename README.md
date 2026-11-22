@@ -8,6 +8,7 @@ Vertical 1080×1920 edits for TikTok / IG Reels. One shared engine, one folder p
 | `RepairPhone` | Repair phone — tukar LCD, siap hari sama | 55s |
 | `Showroom` | 19 Motor Trading — Y15ZR, LC135, skuter | 86s |
 | `StokBaru` | Stok baru sampai — E-Bonus, Lagenda 2022, LC (min 1:31) | 94s |
+| `EventAkhirTahun` | 19 Motor Trading — event Jualan Penghabisan Stok 26–29 Nov: 7-clip montage on the user's voice-over, subtitles, hype effects + outro | 68s |
 | `XmaxV1` | 19 Motor Trading — Yamaha XMAX V1 RM19,000+, subtitles + outro | 61s |
 | `YamahaSport` | 19 Motor Trading — Yamaha Sport CDI (Yamaha Sukan) RM2,999, minimal + outro | 68s |
 | `Ex5Restore` | 19 Motor Trading — EX5 / Dream full restore stok, subtitles + outro | 96s |
@@ -53,6 +54,7 @@ SFX in `public/sfx` are original, synthesised by `scripts/make_sfx.py`.
 ## Music credits (put in the post caption)
 - Video 1: "Funky Chunk" Kevin MacLeod (incompetech.com)
 - Video 2: "Getting it Done" Kevin MacLeod (incompetech.com)
-- Video 3–21: "Funky Chunk" Kevin MacLeod (incompetech.com)
+- Video 3–21: "Funky Chunk"
+- Event akhir tahun: "Getting it Done" Kevin MacLeod (incompetech.com) Kevin MacLeod (incompetech.com)
 
 Licensed under Creative Commons: By Attribution 4.0 License — http://creativecommons.org/licenses/by/4.0/
