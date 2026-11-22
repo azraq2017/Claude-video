@@ -118,3 +118,11 @@ if [ ! -f public/event/vo.m4a ]; then
   ffmpeg -v error -y -i public/event/raw.m4a -af "highpass=f=85,afftdn=nr=8:nf=-40,acompressor=threshold=-20dB:ratio=3:attack=8:release=120:makeup=2,equalizer=f=3000:t=q:w=1.2:g=2,loudnorm=I=-14:TP=-1.5:LRA=9" -ar 48000 -ac 2 -c:a aac -b:a 192k public/event/vo.m4a
   rm public/event/raw.m4a
 fi
+# v22 arrives as rotated HEVC: transcode upright first
+if [ ! -f public/v22/source.mp4 ]; then
+  mkdir -p public/v22
+  curl -sSL -o public/v22/raw.mp4 "https://drive.usercontent.google.com/download?id=1N2k12Z0GPjHuCM3NU4oRyzZKkAHVbPkX&export=download&confirm=t"
+  ffmpeg -v error -y -i public/v22/raw.mp4 -c:v libx264 -preset fast -crf 17 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart public/v22/source.mp4
+  rm public/v22/raw.mp4
+fi
+fetch v22 1N2k12Z0GPjHuCM3NU4oRyzZKkAHVbPkX 85 10 40   # 19MTR Honda Vario 150
