@@ -28,20 +28,45 @@ import words from "./words.json";
  */
 
 const VO_END = 64.6; // seconds — voice-over ends at 63.6
-export const EVENT_FRAMES = Math.round(VO_END * FPS) + OUTRO_FRAMES - OUTRO_OVERLAP;
 
-// captions come from the VO (one continuous "clip")
+/**
+ * Output = voice-over sections with music-only b-roll "breathers" between them, so the whole
+ * video lands on exactly 1:31 (user request) without slowing the voice down.
+ * Fillers point at the VO's silent tail (64.2s+) and are muted.
+ */
+const FILL = 64.2;
+const filler = (dur: number) => ({ start: FILL, end: FILL + dur, mute: true });
+const SEGS = [
+  filler(5.0), // teaser pre-roll
+  { start: 0.0, end: 15.0 }, // event + dates
+  filler(5.0),
+  { start: 15.0, end: 31.2 }, // 100 bikes, price range
+  filler(4.5),
+  { start: 31.2, end: 47.85 }, // models
+  filler(4.5),
+  { start: 47.85, end: 60.3 }, // save the date + location
+  filler(3.73),
+  { start: 60.3, end: VO_END }, // DM
+];
+
 const base = createBase({
-  clips: [{ start: 0, end: VO_END }],
-  faces: [[0, 0.3, 0.08, 0.4, 0.08], [VO_END, 0.3, 0.08, 0.4, 0.08]],
+  clips: SEGS,
+  faces: [[0, 0.3, 0.08, 0.4, 0.08], [70, 0.3, 0.08, 0.4, 0.08]],
   words,
   keywords: [],
 });
-const f = (s: number) => Math.round(s * FPS);
+const { tl } = base;
+export const EVENT_FRAMES = tl.total + OUTRO_FRAMES - OUTRO_OVERLAP;
+/** VO seconds → output frame (only for moments that are in a VO section). */
+const F = (t: number) => {
+  const c = tl.placed.find((c) => !c.mute && t >= c.srcStart - 1e-3 && t <= c.srcEnd + 1e-3);
+  if (!c) throw new Error(`VO time ${t}s is not in the edit`);
+  return c.from + Math.round((t - c.srcStart) * FPS);
+};
 
-/* ----------------------------- SHOT LIST (output seconds) ----------------------------- */
-// [outFrom, outTo, clip, srcStart]
-const SHOTS: [number, number, number, number][] = [
+/* ----------------------------- SHOT LIST ----------------------------- */
+// VO-timed shots: [voFrom, voTo, clip, srcStart] — split onto the VO sections of the output
+const VO_SHOTS: [number, number, number, number][] = [
   [0.0, 3.0, 7, 0.0], // wide: tents + banner
   [3.0, 6.0, 1, 0.0], // banner pan
   [6.0, 8.5, 5, 0.0], // crowd
@@ -57,16 +82,44 @@ const SHOTS: [number, number, number, number][] = [
   [38.3, 40.4, 4, 12.2], // yellow
   [40.4, 42.3, 4, 14.3], // red
   [42.3, 44.6, 3, 11.8], // scooter
-  [44.6, 47.8, 3, 14.0], // scooter
-  [47.8, 50.6, 4, 26.0], // RM4,999 → RM4,550 tag in hand
+  [44.6, 47.85, 3, 14.0], // scooter
+  [47.85, 50.6, 4, 26.0], // RM4,999 → RM4,550 tag in hand
   [50.6, 52.0, 6, 5.6], // crowd
   [52.0, 55.0, 6, 2.5], // crowd
   [55.0, 59.0, 2, 66.0], // rows
   [59.0, 61.5, 5, 2.5], // crowd
   [61.5, VO_END, 1, 18.0], // crowd
 ];
-// section changes → flash + whoosh
-const SECTION_CUTS = [3.0, 15.0, 31.2, 47.8, 52.0];
+// b-roll for each filler, in order: [clip, srcStart, seconds]
+const FILLER_SHOTS: [number, number, number][][] = [
+  [[1, 4.6, 1.25], [2, 11.0, 1.25], [6, 0.5, 1.25], [5, 3.0, 1.25]], // teaser: quick cuts
+  [[2, 16.5, 2.5], [1, 32.0, 2.5]], // rows, crowd
+  [[3, 0.0, 1.5], [3, 6.0, 1.5], [4, 8.2, 1.5]], // price-tag montage
+  [[2, 49.0, 2.25], [2, 77.0, 2.25]], // rows
+  [[7, 0.5, 3.73]], // wide tents
+];
+
+type Out = { from: number; frames: number; clip: number; src: number };
+const SHOTS_OUT: Out[] = [];
+for (const c of tl.placed.filter((c) => !c.mute)) {
+  for (const [a, b, clip, src] of VO_SHOTS) {
+    const lo = Math.max(a, c.srcStart), hi = Math.min(b, c.srcEnd);
+    if (hi - lo < 0.2) continue;
+    const from = c.from + Math.round((lo - c.srcStart) * FPS);
+    const to = c.from + Math.round((hi - c.srcStart) * FPS);
+    SHOTS_OUT.push({ from, frames: to - from, clip, src: src + (lo - a) });
+  }
+}
+tl.placed.filter((c) => c.mute).forEach((c, k) => {
+  let at = c.from;
+  for (const [clip, src, sec] of FILLER_SHOTS[k]) {
+    const n = Math.min(Math.round(sec * FPS), c.from + c.frames - at);
+    SHOTS_OUT.push({ from: at, frames: n, clip, src });
+    at += n;
+  }
+});
+// section changes → flash + whoosh (start of every output section after the first)
+const SECTION_FRAMES = tl.placed.slice(1).map((c) => c.from);
 
 const Shot: React.FC<{ clip: number; srcStart: number; frames: number }> = ({ clip, srcStart, frames }) => {
   const frame = useCurrentFrame();
@@ -75,7 +128,7 @@ const Shot: React.FC<{ clip: number; srcStart: number; frames: number }> = ({ cl
     <AbsoluteFill style={{ transform: `scale(${z})` }}>
       <OffthreadVideo
         src={staticFile(`event/f${clip}.mp4`)}
-        trimBefore={f(srcStart)}
+        trimBefore={Math.round(srcStart * FPS)}
         volume={0.12} // a little crowd ambience under the VO
         style={{ width: "100%", height: "100%", objectFit: "cover", filter: "contrast(1.08) saturate(1.2) brightness(1.03)" }}
       />
@@ -215,7 +268,7 @@ const ModelChip: React.FC<{ dur: number; text: string }> = ({ dur, text }) => {
   );
 };
 
-type G = { from: number; to: number; el: (dur: number) => React.ReactNode };
+type G = { from: number; to: number; el: (dur: number) => React.ReactNode; out?: boolean };
 const GFX: G[] = [
   { from: 0.0, to: 9.6, el: (d) => <EventTitle dur={d} /> },
   { from: 9.9, to: 15.0, el: (d) => <DateSlam dur={d} kicker="Event akhir tahun" /> },
@@ -236,19 +289,33 @@ const GFX: G[] = [
   { from: 60.4, to: VO_END, el: (d) => <QuoteLabel dur={d} lines={["DM kami", "Info lanjut di bio"]} highlight={1} top={930} left={90} badge={false} /> },
 ];
 
-type S = { at: number; name: string; vol: number };
+// graphics on the music-only fillers (output frames)
+const fill = tl.placed.filter((c) => c.mute);
+const FILL_GFX: { from: number; frames: number; el: (dur: number) => React.ReactNode }[] = [
+  { from: fill[0].from + 4, frames: fill[0].frames - 4, el: (d) => <StressHit dur={d} kind="promo" lines={["Event akhir tahun", "100+ motor terpakai"]} top={890} left={90} /> },
+  { from: fill[2].from, frames: fill[2].frames, el: (d) => <QuoteLabel dur={d} lines={["Harga potong", "habis-habisan!"]} highlight={1} top={250} left={90} badge={false} /> },
+  { from: fill[4].from, frames: fill[4].frames, el: (d) => <QuoteLabel dur={d} lines={["26–29 Nov", "Wisma Mazra, Sungai Petani"]} highlight={0} top={930} left={90} badge={false} /> },
+];
+
+type S = { frame: number; name: string; vol: number };
+const vo = (t: number, name: string, vol: number): S => ({ frame: F(t), name, vol });
 const SFX: S[] = [
-  { at: 0.0, name: "impact", vol: 0.55 },
-  { at: 0.2, name: "whoosh", vol: 0.4 },
-  ...SECTION_CUTS.map((t) => ({ at: t - 0.12, name: "whoosh", vol: 0.35 })),
-  { at: 9.9, name: "stamp", vol: 0.55 },
-  { at: 18.8, name: "pop", vol: 0.4 },
-  { at: 24.7, name: "cash", vol: 0.4 },
-  { at: 28.1, name: "cash", vol: 0.4 },
-  ...[33.0, 34.9, 36.4, 38.5, 40.9, 42.4, 45.1].map((t) => ({ at: t, name: "pop", vol: 0.38 })),
-  { at: 47.85, name: "cash", vol: 0.5 },
-  { at: 50.06, name: "stamp", vol: 0.55 },
-  { at: 60.4, name: "notif", vol: 0.45 },
+  // teaser
+  { frame: 0, name: "impact", vol: 0.55 },
+  { frame: 4, name: "cash", vol: 0.45 },
+  ...[1, 2, 3].map((k) => ({ frame: fill[0].from + Math.round(k * 1.25 * FPS) - 3, name: "whoosh", vol: 0.25 })),
+  // every section change
+  ...SECTION_FRAMES.map((fr) => ({ frame: Math.max(0, fr - 4), name: "whoosh", vol: 0.35 })),
+  // price-tag montage cuts
+  ...[1, 2].map((k) => ({ frame: fill[2].from + Math.round(k * 1.5 * FPS), name: "click", vol: 0.35 })),
+  vo(9.9, "stamp", 0.55),
+  vo(18.8, "pop", 0.4),
+  vo(24.7, "cash", 0.4),
+  vo(28.1, "cash", 0.4),
+  ...[33.0, 34.9, 36.4, 38.5, 40.9, 42.4, 45.1].map((t) => vo(t, "pop", 0.38)),
+  vo(47.9, "cash", 0.5),
+  vo(50.06, "stamp", 0.55),
+  vo(60.4, "notif", 0.45),
 ];
 
 /* ----------------------------- MUSIC ----------------------------- */
@@ -277,9 +344,9 @@ const Flash: React.FC = () => {
 
 export const EventPromo: React.FC = () => (
   <AbsoluteFill style={{ background: "#000" }}>
-    {SHOTS.map(([a, b, clip, src], i) => (
-      <Sequence key={`s${i}`} from={f(a)} durationInFrames={f(b) - f(a)} name={`shot ${i} · f${clip}@${src}`}>
-        <Shot clip={clip} srcStart={src} frames={f(b) - f(a)} />
+    {SHOTS_OUT.map((sh, i) => (
+      <Sequence key={`s${i}`} from={sh.from} durationInFrames={sh.frames} name={`shot ${i} · f${sh.clip}@${sh.src.toFixed(1)}`}>
+        <Shot clip={sh.clip} srcStart={sh.src} frames={sh.frames} />
       </Sequence>
     ))}
     <AbsoluteFill
@@ -290,27 +357,38 @@ export const EventPromo: React.FC = () => (
     />
 
     {GFX.map((g, i) => (
-      <Sequence key={`g${i}`} from={f(g.from)} durationInFrames={f(g.to) - f(g.from)}>
-        {g.el(f(g.to) - f(g.from))}
+      <Sequence key={`g${i}`} from={F(g.from)} durationInFrames={F(g.to) - F(g.from)}>
+        {g.el(F(g.to) - F(g.from))}
+      </Sequence>
+    ))}
+    {FILL_GFX.map((g, i) => (
+      <Sequence key={`fg${i}`} from={g.from} durationInFrames={g.frames}>
+        {g.el(g.frames)}
       </Sequence>
     ))}
 
-    <CleanCaptions pages={base.captions} hiddenRanges={[[0, f(9.6)], [f(9.9), f(15.0)], [f(50.06), f(55.0)]]} />
+    <CleanCaptions pages={base.captions} hiddenRanges={[[F(0), F(9.6)], [F(9.9), F(15.0)], [F(50.06), F(55.0)]]} />
 
-    {SECTION_CUTS.map((t, i) => (
-      <Sequence key={`fl${i}`} from={f(t)} durationInFrames={6}>
+    {[...SECTION_FRAMES, F(3.0)].map((fr, i) => (
+      <Sequence key={`fl${i}`} from={fr} durationInFrames={6}>
         <Flash />
       </Sequence>
     ))}
 
-    <Sequence from={f(VO_END) - OUTRO_OVERLAP} durationInFrames={OUTRO_FRAMES} name="outro">
+    <Sequence from={tl.total - OUTRO_OVERLAP} durationInFrames={OUTRO_FRAMES} name="outro">
       <Outro19 />
     </Sequence>
 
-    <Audio src={staticFile("event/vo.m4a")} />
+    {tl.placed
+      .filter((c) => !c.mute)
+      .map((c, i) => (
+        <Sequence key={`vo${i}`} from={c.from} durationInFrames={c.frames}>
+          <Audio src={staticFile("event/vo.m4a")} trimBefore={Math.round(c.srcStart * FPS)} trimAfter={Math.round(c.srcStart * FPS) + c.frames} />
+        </Sequence>
+      ))}
     <Audio src={staticFile("music/getting_it_done.mp3")} volume={musicVolume} loop />
     {SFX.map((s, i) => (
-      <Sequence key={`x${i}`} from={Math.max(0, f(s.at))}>
+      <Sequence key={`x${i}`} from={s.frame}>
         <Audio src={staticFile(`sfx/${s.name}.wav`)} volume={s.vol} />
       </Sequence>
     ))}
