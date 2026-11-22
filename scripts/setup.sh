@@ -126,3 +126,11 @@ if [ ! -f public/v22/source.mp4 ]; then
   rm public/v22/raw.mp4
 fi
 fetch v22 1N2k12Z0GPjHuCM3NU4oRyzZKkAHVbPkX 85 10 40   # 19MTR Honda Vario 150
+# v23 arrives as rotated HEVC: transcode upright first
+if [ ! -f public/v23/source.mp4 ]; then
+  mkdir -p public/v23
+  curl -sSL -o public/v23/raw.mp4 "https://drive.usercontent.google.com/download?id=17NGw4JZbNzlv2l2rwNyJpU_OCp2lhpb2&export=download&confirm=t"
+  ffmpeg -v error -y -i public/v23/raw.mp4 -c:v libx264 -preset fast -crf 17 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart public/v23/source.mp4
+  rm public/v23/raw.mp4
+fi
+fetch v23 17NGw4JZbNzlv2l2rwNyJpU_OCp2lhpb2 85 10 40   # 19MTR LC135 row (subtitles)
