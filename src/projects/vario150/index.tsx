@@ -24,7 +24,7 @@ const GRAPHICS: Gfx[] = [
   L(7.18, 11.6, ["📍 19 Motor Trading", "Sungai Petani"]),
   L(11.78, 14.3, ["Harga boleh adjust 🤝"]),
   L(19.32, 25.5, ["Bukan 160 / 125", "Ini Vario 150"], 1),
-  L(28.52, 33.3, ["Kondisi tip-top", "Cover set · mileage", "Engine tune ✅"], 0),
+  L(28.52, 33.3, ["Kondisi tip-top", "Cover set · mileage", "Engine cun ✅"], 0),
   L(33.38, 36.4, ["Mai 19 Motor Trading", "Sungai Petani"], 0, false),
 ];
 
