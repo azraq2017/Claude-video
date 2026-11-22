@@ -9,7 +9,7 @@ import faces from "./faces.json";
  * Video 22 — 19 Motor Trading: Honda Vario 150 row in the showroom (voice-over).
  * Source was rotated HEVC → transcoded upright. MINIMAL STYLE, no subtitles (not requested),
  * 19MTR outro. No jackpot / trade-in / promo spoken → calm labels, no stress hits.
- * Price range comes from the tags visible in the shot (RM5,500 / RM5,999).
+ * Opening price per user: "Vario 150 RM4,000++".
  */
 const base = createBase({ clips: edl, faces: faces as number[][], words, keywords: [] });
 const { gfx, tl } = base;
@@ -20,7 +20,7 @@ const L = (from: number, to: number, lines: string[], highlight?: number, badge 
   fixed(gfx(from, to, 0, (d) => <QuoteLabel dur={d} lines={lines} highlight={highlight} top={TOP} left={90} badge={badge} />));
 
 const GRAPHICS: Gfx[] = [
-  L(0.0, 4.3, ["Honda Vario 150", "RM5,500 – RM5,999"], 1),
+  L(0.0, 4.3, ["Vario 150", "RM4,000++"], 1),
   L(7.18, 11.6, ["📍 19 Motor Trading", "Sungai Petani"]),
   L(11.78, 14.3, ["Harga boleh adjust 🤝"]),
   L(19.32, 25.5, ["Bukan 160 / 125", "Ini Vario 150"], 1),

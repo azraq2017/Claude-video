@@ -9,7 +9,7 @@ Vertical 1080×1920 edits for TikTok / IG Reels. One shared engine, one folder p
 | `Showroom` | 19 Motor Trading — Y15ZR, LC135, skuter | 86s |
 | `StokBaru` | Stok baru sampai — E-Bonus, Lagenda 2022, LC (min 1:31) | 94s |
 | `EventAkhirTahun` | 19 Motor Trading — event Jualan Penghabisan Stok 26–29 Nov: 7-clip montage on the user's voice-over, subtitles, hype effects + outro | 68s |
-| `Vario150` | 19 Motor Trading — Honda Vario 150 row (RM5,500–RM5,999), minimal + outro | 35s |
+| `Vario150` | 19 Motor Trading — Honda Vario 150 row (RM4,000++), minimal + outro | 35s |
 | `XmaxV1` | 19 Motor Trading — Yamaha XMAX V1 RM19,000+, subtitles + outro | 61s |
 | `YamahaSport` | 19 Motor Trading — Yamaha Sport CDI (Yamaha Sukan) RM2,999, minimal + outro | 68s |
 | `Ex5Restore` | 19 Motor Trading — EX5 / Dream full restore stok, subtitles + outro | 96s |
