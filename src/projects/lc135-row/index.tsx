@@ -26,7 +26,7 @@ const GRAPHICS: Gfx[] = [
 
   L(2.16, 6.2, ["Yamaha LC135", "Harga terbaik", "Full restore ✅"], 0),
   L(6.38, 12.0, ["📍 19 Motor Trading", "Sungai Petani"]),
-  L(12.9, 17.7, ["Hujung sekali:", "LC V8 · sebiji je"], 1),
+  L(12.9, 17.7, ["Hujung sekali: LC V8", "Cover set MRO", "Sebiji je!"], 1),
   L(22.08, 26.8, ["Kondisi tip-top", "Yang biru: LC V4"], 0),
   L(32.25, 34.45, ["LC V4 · PNK 4483"]),
   fixed(gfx(35.4, 37.6, 0, (d) => <StressHit dur={d} kind="jackpot" lines={["LC V4 biru", "Let go harga jackpot!"]} top={890} left={90} />)),
