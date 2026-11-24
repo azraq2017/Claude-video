@@ -25,11 +25,12 @@ import { yamahaSport } from "./projects/yamaha-sport";
 import { xmaxV1 } from "./projects/xmax-v1";
 import { vario150 } from "./projects/vario150";
 import { lc135Row } from "./projects/lc135-row";
+import { eventLelong } from "./projects/event-lelong";
 import { EventPromo, EVENT_FRAMES } from "./projects/event-akhir-tahun/EventPromo";
 import { OutroPreview, OUTRO_FRAMES } from "./brand/Outro19";
 import { OutroTasTechPreview, TT_OUTRO_FRAMES } from "./brand/OutroTasTech";
 
-const PROJECTS: Project[] = [tolakMotor, repairPhone, showroom, stokBaru, ex5Mahal, phoneLama, repairTv, stokWalkthrough, minimalDemo, promoDeepavali, offerBos, antiScam, tolakPhone, stok100, lc2999, lagenda1950, lcV4, lagendaBiru, ex5Restore, yamahaSport, xmaxV1, vario150, lc135Row];
+const PROJECTS: Project[] = [tolakMotor, repairPhone, showroom, stokBaru, ex5Mahal, phoneLama, repairTv, stokWalkthrough, minimalDemo, promoDeepavali, offerBos, antiScam, tolakPhone, stok100, lc2999, lagenda1950, lcV4, lagendaBiru, ex5Restore, yamahaSport, xmaxV1, vario150, lc135Row, eventLelong];
 
 // Projects hold functions/typed arrays, so pass them by closure instead of
 // (JSON-serialised) defaultProps.

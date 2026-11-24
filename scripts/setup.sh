@@ -134,3 +134,15 @@ if [ ! -f public/v23/source.mp4 ]; then
   rm public/v23/raw.mp4
 fi
 fetch v23 17NGw4JZbNzlv2l2rwNyJpU_OCp2lhpb2 85 10 40   # 19MTR LC135 row (subtitles)
+# Event lelong (promo event 1-3): rotated HEVC -> upright, concatenated into one source
+if [ ! -f public/event2/source.mp4 ]; then
+  mkdir -p public/event2/tmp
+  i=1; for id in 1MmaUClr2C3_u7yr_VjZAGVO3DiMyUQNK 1FBqQMQCrCwOz2ZarbEKHUxRe4CBVz7WR 1PIDHnpNegwXDx0zBC4r_qCq63Bb91_5h; do
+    curl -sSL -o public/event2/tmp/raw.mp4 "https://drive.usercontent.google.com/download?id=$id&export=download&confirm=t"
+    ffmpeg -v error -y -i public/event2/tmp/raw.mp4 -c:v libx264 -preset fast -crf 17 -pix_fmt yuv420p -c:a aac -b:a 192k public/event2/tmp/f$i.mp4
+    echo "file '$PWD/public/event2/tmp/f$i.mp4'" >> public/event2/tmp/list.txt; i=$((i+1))
+  done
+  ffmpeg -v error -y -f concat -safe 0 -i public/event2/tmp/list.txt -c copy -movflags +faststart public/event2/source.mp4
+  rm -rf public/event2/tmp
+fi
+fetch event2 _ 85 10 40   # (source already present; just builds voice.m4a)

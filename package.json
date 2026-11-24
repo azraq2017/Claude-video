@@ -49,7 +49,9 @@
     "preview:v22": "remotion render Vario150 out/vario150_preview_720p.mp4 --scale=0.6666666666666666 --crf=24 --timeout=120000",
     "render:v22": "remotion render Vario150 out/vario150_final.mp4 --crf=18 --timeout=120000 && ffmpeg -y -v error -i out/vario150_final.mp4 -c:v copy -af alimiter=limit=0.84:attack=2:release=50:level=false -c:a aac -b:a 256k -ar 48000 -movflags +faststart out/vario150_FINAL_1080p.mp4",
     "preview:v23": "remotion render Lc135Row out/lc135row_preview_720p.mp4 --scale=0.6666666666666666 --crf=24 --timeout=120000",
-    "render:v23": "remotion render Lc135Row out/lc135row_final.mp4 --crf=18 --timeout=120000 && ffmpeg -y -v error -i out/lc135row_final.mp4 -c:v copy -af alimiter=limit=0.84:attack=2:release=50:level=false -c:a aac -b:a 256k -ar 48000 -movflags +faststart out/lc135row_FINAL_1080p.mp4"
+    "render:v23": "remotion render Lc135Row out/lc135row_final.mp4 --crf=18 --timeout=120000 && ffmpeg -y -v error -i out/lc135row_final.mp4 -c:v copy -af alimiter=limit=0.84:attack=2:release=50:level=false -c:a aac -b:a 256k -ar 48000 -movflags +faststart out/lc135row_FINAL_1080p.mp4",
+    "preview:event2": "remotion render EventLelong out/eventlelong_preview_720p.mp4 --scale=0.6666666666666666 --crf=24 --timeout=120000",
+    "render:event2": "remotion render EventLelong out/eventlelong_final.mp4 --crf=18 --timeout=120000 && ffmpeg -y -v error -i out/eventlelong_final.mp4 -c:v copy -af alimiter=limit=0.84:attack=2:release=50:level=false -c:a aac -b:a 256k -ar 48000 -movflags +faststart out/eventlelong_FINAL_1080p.mp4"
   },
   "dependencies": {
     "@fontsource/anton": "^5.3.0",
