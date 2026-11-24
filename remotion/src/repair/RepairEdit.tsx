@@ -221,12 +221,12 @@ export const RepairEdit: React.FC = () => {
 
       {/* music: low under the voice, lifts during the silent timelapse, rides into the outro */}
       <Audio
-        src={staticFile('sfx/bgm_minimal.wav')}
+        src={staticFile('sfx/bgm_upbeat.wav')}
         volume={(x) =>
           interpolate(
             x,
             [0, 10, 480, 520, 1560, 1600, REPAIR_BODY - 10, REPAIR_BODY + 10, REPAIR_TOTAL - 20, REPAIR_TOTAL],
-            [0, 0.13, 0.13, 0.46, 0.46, 0.13, 0.13, 0.4, 0.4, 0],
+            [0, 0.11, 0.11, 0.56, 0.56, 0.11, 0.11, 0.45, 0.45, 0],
             {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'},
           )
         }
