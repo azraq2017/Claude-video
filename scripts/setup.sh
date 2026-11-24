@@ -146,3 +146,11 @@ if [ ! -f public/event2/source.mp4 ]; then
   rm -rf public/event2/tmp
 fi
 fetch event2 _ 85 10 40   # (source already present; just builds voice.m4a)
+# v24 (HEVC .MOV, upright): transcode to H.264; audio kept untouched
+if [ ! -f public/v24/source.mp4 ]; then
+  mkdir -p public/v24
+  curl -sSL -o public/v24/raw.mov "https://drive.usercontent.google.com/download?id=1uICqXG2zfpEc2qU-S41fm2VVmOTko8Vb&export=download&confirm=t"
+  ffmpeg -v error -y -i public/v24/raw.mov -c:v libx264 -preset fast -crf 17 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart public/v24/source.mp4
+  ffmpeg -v error -y -i public/v24/source.mp4 -vn -c:a copy public/v24/voice.m4a
+  rm public/v24/raw.mov
+fi
