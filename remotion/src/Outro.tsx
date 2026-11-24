@@ -81,7 +81,7 @@ const Wordmark: React.FC<{from: number}> = ({from}) => {
   );
 };
 
-export const Outro: React.FC<{line?: string; withAudio?: boolean}> = ({line = 'Gajet terpakai • Repair • Servis', withAudio = true}) => {
+export const Outro: React.FC<{line?: string; withAudio?: boolean; music?: boolean}> = ({line = 'Gajet terpakai • Repair • Servis', withAudio = true, music = true}) => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const bgIn = interpolate(f, [0, 8], [0, 1], {extrapolateRight: 'clamp'});
@@ -196,11 +196,11 @@ export const Outro: React.FC<{line?: string; withAudio?: boolean}> = ({line = 'G
           <Sequence from={50}>
             <Audio src={sfx('pop')} volume={0.35} />
           </Sequence>
-          <Audio
+          {music ? <Audio
             src={staticFile('sfx/bgm.wav')}
             trimBefore={Math.round(19.2 * 30)}
             volume={(x) => interpolate(x, [0, 8, OUTRO_FRAMES - 16, OUTRO_FRAMES], [0, 0.3, 0.3, 0], {extrapolateRight: 'clamp'})}
-          />
+          /> : null}
         </>
       ) : null}
     </AbsoluteFill>

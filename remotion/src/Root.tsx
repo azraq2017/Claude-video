@@ -5,6 +5,7 @@ import {FPS, TOTAL_FRAMES} from './edl';
 import {Main13} from './ip13/Main13';
 import {TOTAL13} from './ip13/edl13';
 import {Outro, OUTRO_FRAMES} from './Outro';
+import {RepairEdit, REPAIR_TOTAL} from './repair/RepairEdit';
 
 const WithOutro: React.FC<{which: '12' | '13'}> = ({which}) => (
   <Series>
@@ -21,6 +22,8 @@ export const Root: React.FC = () => (
   <>
     {/* TasTech brand outro on its own */}
     <Composition id="TastechOutro" component={Outro} durationInFrames={OUTRO_FRAMES} {...V} />
+    {/* Oppo LCD repair timelapse (minimal style) */}
+    <Composition id="RepairLCD" component={RepairEdit} durationInFrames={REPAIR_TOTAL} {...V} />
     {/* iPhone 12 purple */}
     <Composition id="Main" component={Main} durationInFrames={TOTAL_FRAMES} {...V} defaultProps={{showSafeZone: false}} />
     <Composition id="SafeZoneCheck" component={Main} durationInFrames={TOTAL_FRAMES} {...V} defaultProps={{showSafeZone: true}} />
