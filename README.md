@@ -9,6 +9,7 @@ Vertical 1080×1920 edits for TikTok / IG Reels. One shared engine, one folder p
 | `Showroom` | 19 Motor Trading — Y15ZR, LC135, skuter | 86s |
 | `StokBaru` | Stok baru sampai — E-Bonus, Lagenda 2022, LC (min 1:31) | 94s |
 | `EventAkhirTahun` | 19 Motor Trading — event Jualan Penghabisan Stok 26–29 Nov: 7-clip montage on the user's voice-over, subtitles, hype effects + outro | 68s |
+| `MotorBajet` | 19 Motor Trading — sebaris motor bajet RM1,500–RM2,150 + lokasi event, subtitles + outro | 72s |
 | `EventClearStock` | 19 Motor Trading — event clear stock (Kamis–Ahad 26–29 Nov): infographics only, original video/audio untouched | 117s |
 | `EventLelong` | 19 Motor Trading — event lelong motosikal terpakai 26–29 Nov (3 clips joined), exactly 1:31, minimal + subtitles + outro | 91s |
 | `Lc135Row` | 19 Motor Trading — LC135 row, LC V8 + LC V4 biru jackpot, subtitles + outro | 42s |
