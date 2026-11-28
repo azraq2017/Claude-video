@@ -34,7 +34,7 @@ const GRAPHICS: Gfx[] = [
   L(38.54, 41.1, ["Sebaris motor", "harga bajet"], 1),
   L(41.86, 46.4, ["LC & Lagenda", "pun ada ✅"]),
   L(49.6, 56.1, ["📍 Wisma Mazra", "Sungai Petani", "Hari ni sampai esok"], 2),
-  L(57.7, 62.5, ["Petronas Taman Keladi", "Depan Super Ceramic"]),
+  L(57.7, 62.5, ["Petron Taman Keladi", "Depan Super Ceramic"]),
   L(66.7, 70.8, ["Cari banner ni", "Wisma Mazra 📍"], 1, false),
 ];
 
